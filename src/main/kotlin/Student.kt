@@ -83,6 +83,10 @@ class Student{
     companion object
     {
         var ids=0
+        fun validatePhone(value:String?): Boolean
+        {
+            return value?.matches(Regex("""\+?\d{11}""")) ?: true
+        }
     }
     init
     {
@@ -97,13 +101,14 @@ class Student{
         middleName=_middleName
     }
 
-    constructor(_lastName:String,_firstName:String,_middleName:String,_phone:String?=null,_email:String?=null,_github:String?=null)
+    constructor(_lastName:String,_firstName:String,_middleName:String,_phone:String?=null,_telegram:String?=null,_email:String?=null,_github:String?=null)
     {
         id=ids
         lastName=_lastName
         firstName=_firstName
         middleName=_middleName
         phone=_phone
+        telegram=_telegram
         email=_email
         github=_github
     }
@@ -120,7 +125,7 @@ class Student{
         github=hashStud.getOrDefault("github",null).toString()
     }
 
-    fun write()
+    override fun toString() : String
     {
         var out = "ID: $id"
         out+=", Фамиля: $lastName"
@@ -129,6 +134,6 @@ class Student{
         if(phone!=null)out+=", Телефон: $phone"
         if(email!=null)out+=", Почта: $email"
         if(github!=null)out+=", Гит: $github"
-        println(out)
+        return out
     }
 }
