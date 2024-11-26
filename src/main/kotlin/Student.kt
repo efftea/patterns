@@ -80,6 +80,24 @@ class Student{
             return field
         }
 
+    constructor(_lastName:String,_firstName:String,_middleName:String)
+    {
+        lastName=_lastName
+        firstName=_firstName
+        middleName=_middleName
+    }
+
+    constructor(_id:Int=0,_lastName:String,_firstName:String,_middleName:String,_phone:String?=null,_email:String?=null,_github:String?=null)
+    {
+        id=_id
+        lastName=_lastName
+        firstName=_firstName
+        middleName=_middleName
+        phone=_phone
+        email=_email
+        github=_github
+    }
+
     fun write()
     {
         var out = "ID: $id"
