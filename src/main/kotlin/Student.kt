@@ -13,7 +13,10 @@ class Student{
     var lastName: String = ""
         set(value)
         {
-            field=value
+            if(validateLastName(value))
+            {
+                field=value
+            }
         }
         get()
         {
@@ -23,17 +26,23 @@ class Student{
     var firstName: String = ""
         set(value)
         {
-            field=value
+            if(validateFirstName(value))
+            {
+                field=value
+            }
         }
         get()
         {
             return field
         }
 
-    var middleName: String? = null
+    var middleName: String = ""
         set(value)
         {
-            field=value
+            if(validateMiddleName(value))
+            {
+                field=value
+            }
         }
         get()
         {
@@ -43,7 +52,9 @@ class Student{
     var phone: String? = null
         set(value)
         {
-            field=value
+            if(validatePhone(value)) {
+                field = value
+            }
         }
         get()
         {
@@ -53,7 +64,9 @@ class Student{
     var telegram: String? = null
         set(value)
         {
-            field=value
+            if(validateTG(value)) {
+                field = value
+            }
         }
         get()
         {
@@ -63,7 +76,9 @@ class Student{
     var email: String? = null
         set(value)
         {
-            field=value
+            if(validateEMail(value)) {
+                field = value
+            }
         }
         get()
         {
@@ -73,7 +88,9 @@ class Student{
     var github: String? = null
         set(value)
         {
-            field=value
+            if(validateGitHub(value)) {
+                field = value
+            }
         }
         get()
         {
@@ -86,6 +103,32 @@ class Student{
         fun validatePhone(value:String?): Boolean
         {
             return value?.matches(Regex("""\+?\d{11}""")) ?: true
+        }
+
+        fun validateLastName(value:String): Boolean
+        {
+            return value.matches(Regex("""[A-Я]{1}[a-я]*"""))
+        }
+        fun validateFirstName(value:String): Boolean
+        {
+            return value.matches(Regex("""[A-Я]{1}[a-я]*"""))
+        }
+        fun validateMiddleName(value:String): Boolean
+        {
+            return value.matches(Regex("""[A-Я]{1}[a-я]*"""))
+        }
+
+        fun validateTG(value:String?): Boolean
+        {
+            return value?.matches(Regex("""\@{1}.*""")) ?: true
+        }
+        fun validateEMail(value:String?): Boolean
+        {
+            return value?.matches(Regex("""\w*\@\w*\.\w*""")) ?: true
+        }
+        fun validateGitHub(value:String?): Boolean
+        {
+            return value?.matches(Regex("""https://github.com/.*""")) ?: true
         }
     }
     init
