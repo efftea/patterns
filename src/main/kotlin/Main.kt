@@ -1,7 +1,22 @@
 fun main(args: Array<String>) {
-    println("Hello World!")
+    val student1 = Student().apply {
+        id = 1
+        lastName = "Кислица"
+        firstName = "Данил"
+        middleName = "Александрович"
+        phone = "79086761505"
+        telegram = "@efftea"
+        email = "kislica2003@mail.ru"
+        github = "efftea"
+    }
 
-    // Try adding program arguments via Run/Debug configuration.
-    // Learn more about running applications: https://www.jetbrains.com/help/idea/running-applications.html.
-    println("Program arguments: ${args.joinToString()}")
+    val student2 = Student().apply {
+        id = 2
+        lastName = "Мищенко"
+        firstName = "Никита"
+        middleName = "Максимович"
+    }
+
+    student1.write()
+    student2.write()
 }

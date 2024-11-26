@@ -79,4 +79,16 @@ class Student{
         {
             return field
         }
+
+    fun write()
+    {
+        var out = "ID: $id"
+        out+=", Фамиля: $lastName"
+        out+=", Имя: $firstName"
+        out+=", Отчество: $middleName"
+        if(phone!=null)out+=", Телефон: $phone"
+        if(email!=null)out+=", Почта: $email"
+        if(github!=null)out+=", Гит: $github"
+        println(out)
+    }
 }
