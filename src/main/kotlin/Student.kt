@@ -80,22 +80,44 @@ class Student{
             return field
         }
 
+    companion object
+    {
+        var ids=0
+    }
+    init
+    {
+        ids++
+    }
+
     constructor(_lastName:String,_firstName:String,_middleName:String)
     {
+        id=ids
         lastName=_lastName
         firstName=_firstName
         middleName=_middleName
     }
 
-    constructor(_id:Int=0,_lastName:String,_firstName:String,_middleName:String,_phone:String?=null,_email:String?=null,_github:String?=null)
+    constructor(_lastName:String,_firstName:String,_middleName:String,_phone:String?=null,_email:String?=null,_github:String?=null)
     {
-        id=_id
+        id=ids
         lastName=_lastName
         firstName=_firstName
         middleName=_middleName
         phone=_phone
         email=_email
         github=_github
+    }
+
+    constructor(hashStud: HashMap<String,Any?>)
+    {
+        id=ids
+        lastName=hashStud["lastName"].toString()
+        firstName=hashStud["firstName"].toString()
+        middleName=hashStud["middleName"].toString()
+        phone=hashStud.getOrDefault("phone",null).toString()
+        telegram=hashStud.getOrDefault("telegram",null).toString()
+        email=hashStud.getOrDefault("email",null).toString()
+        github=hashStud.getOrDefault("github",null).toString()
     }
 
     fun write()
