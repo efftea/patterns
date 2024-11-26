@@ -130,7 +130,22 @@ class Student{
         {
             return value?.matches(Regex("""https://github.com/.*""")) ?: true
         }
+
     }
+
+    fun validate() : Boolean
+    {
+        return this.hasGitHub() && this.hasContact()
+    }
+    private fun hasGitHub() : Boolean
+    {
+        return this.github!=null
+    }
+    private fun hasContact() : Boolean
+    {
+        return this.phone!=null || this.telegram!=null || this.email!=null
+    }
+
     init
     {
         ids++
