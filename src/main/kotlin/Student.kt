@@ -198,6 +198,10 @@ class Student{
         email=hashStud.getOrDefault("email",null).toString()
         github=hashStud.getOrDefault("github",null).toString()
     }
+    
+    constructor(input:String): this (input.split(" ")[0],input.split(" ")[1],input.split(" ")[2])
+    {
+    }
 
     override fun toString() : String
     {
