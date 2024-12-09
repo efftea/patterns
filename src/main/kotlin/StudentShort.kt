@@ -1,9 +1,4 @@
-class StudentShort {
-    private var id: Int = -1
-        get()
-        {
-            return field
-        }
+class StudentShort : SuperStudentClass{
     private var shortname: String? = null
         set(value)
         {
@@ -31,14 +26,7 @@ class StudentShort {
         {
             return field
         }
-    companion object
-    {
-        var ids=0
-    }
-    init
-    {
-        ids++
-    }
+
     constructor(student:Student)
     {
         id=ids
