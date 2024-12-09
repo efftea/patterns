@@ -1,15 +1,4 @@
-class Student{
-    var id: Int = 0
-        set(value)
-        {
-            if(value>0)
-                field=value
-        }
-        get()
-        {
-            return field
-        }
-
+class Student: SuperStudentClass{
     var lastName: String = ""
         set(value)
         {
@@ -85,53 +74,6 @@ class Student{
             return field
         }
 
-    var github: String? = null
-        set(value)
-        {
-            if(validateGitHub(value)) {
-                field = value
-            }
-        }
-        get()
-        {
-            return field
-        }
-
-    companion object
-    {
-        var ids=0
-        fun validatePhone(value:String?): Boolean
-        {
-            return value?.matches(Regex("""\+?\d{11}""")) ?: true
-        }
-
-        fun validateLastName(value:String): Boolean
-        {
-            return value.matches(Regex("""[A-Я]{1}[a-я]*"""))
-        }
-        fun validateFirstName(value:String): Boolean
-        {
-            return value.matches(Regex("""[A-Я]{1}[a-я]*"""))
-        }
-        fun validateMiddleName(value:String): Boolean
-        {
-            return value.matches(Regex("""[A-Я]{1}[a-я]*"""))
-        }
-
-        fun validateTG(value:String?): Boolean
-        {
-            return value?.matches(Regex("""\@{1}.*""")) ?: true
-        }
-        fun validateEMail(value:String?): Boolean
-        {
-            return value?.matches(Regex("""\w*\@\w*\.\w*""")) ?: true
-        }
-        fun validateGitHub(value:String?): Boolean
-        {
-            return value?.matches(Regex("""https://github.com/.*""")) ?: true
-        }
-
-    }
 
     fun validate() : Boolean
     {
@@ -162,10 +104,6 @@ class Student{
         }
     }
 
-    init
-    {
-        ids++
-    }
 
     constructor(_lastName:String,_firstName:String,_middleName:String)
     {
@@ -199,10 +137,40 @@ class Student{
         github=hashStud.getOrDefault("github",null).toString()
     }
 
+    constructor(input:String): this (input.split(" ")[0],input.split(" ")[1],input.split(" ")[2],input.split(" ").getOrNull(3),input.split(" ").getOrNull(4),input.split(" ").getOrNull(5),input.split(" ").getOrNull(6))
+    {
+    }
+
+     fun getInfo() : String
+    {
+        var res ="ФИО: "+ lastName+" "+ firstName[0]+"."+ middleName[0]+". "
+        if(hasGitHub())
+        {
+            res+= "Гит: "+ github
+        }
+        var res2 = ""
+        if(hasContact())
+        {
+            if(email!=null)
+            {
+                res2 = " Почта: "+ email
+            }
+            if(phone!=null)
+            {
+                res2 = " Телефон: "+ phone
+            }
+            if(telegram!=null)
+            {
+                res2 = " Телеграм: "+ telegram
+            }
+        }
+        return res + res2
+    }
+
     override fun toString() : String
     {
         var out = "ID: $id"
-        out+=", Фамиля: $lastName"
+        out+=", Фамилия: $lastName"
         out+=", Имя: $firstName"
         out+=", Отчество: $middleName"
         if(phone!=null)out+=", Телефон: $phone"
