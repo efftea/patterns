@@ -24,4 +24,9 @@ fun main(args: Array<String>) {
     println(student4.toString())
 
     println(student1.getInfo())
+
+    var stud3=StudentShort(student3)
+    println(stud3.toString())
+    var stud1=StudentShort(student1)
+    println(stud1.toString())
 }

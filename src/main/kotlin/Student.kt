@@ -208,7 +208,7 @@ class Student{
         var res ="ФИО: "+ lastName+" "+ firstName[0]+"."+ middleName[0]+". "
         if(hasGitHub())
         {
-            res+= " Гит: "+ github
+            res+= "Гит: "+ github
         }
         var res2 = ""
         if(hasContact())
