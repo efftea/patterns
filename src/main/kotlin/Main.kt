@@ -40,5 +40,6 @@ fun main(args: Array<String>) {
     {
         println(stud)
     }
+    Student.write_to_txt("src/main/kotlin/output.txt", studentFile)
 
 }

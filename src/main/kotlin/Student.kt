@@ -140,6 +140,17 @@ class Student: SuperStudentClass{
             }
             return res
         }
+
+        fun write_to_txt(path: String, studentList:MutableList<Student>)
+        {
+            val file = File(path)
+            var text = ""
+            for(stud in studentList)
+            {
+                text+=(stud.toString()+"\n")
+            }
+            file.writeText(text)
+        }
     }
 
     constructor(_lastName:String,_firstName:String,_middleName:String)
