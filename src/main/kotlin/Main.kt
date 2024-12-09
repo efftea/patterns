@@ -29,4 +29,16 @@ fun main(args: Array<String>) {
     println(stud3.toString())
     var stud1=StudentShort(student1)
     println(stud1.toString())
+
+    var studentFile= Student.read_from_txt("src/main/kotlin/input.txt")
+    for (stud in studentFile)
+    {
+        println(stud)
+    }
+    var studentFile2= Student.read_from_txt("src/main/kotlin/input2.txt")
+    for (stud in studentFile2)
+    {
+        println(stud)
+    }
+
 }
