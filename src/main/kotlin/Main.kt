@@ -10,4 +10,18 @@ fun main(args: Array<String>) {
 
     student2.setContacts("77777777777","@efftea","mishenko@mail.ru")
     println(student2.toString())
+
+    var student3Map= hashMapOf<String,Any?>(
+        "lastName" to "Гринев",
+        "firstName" to "Кирилл",
+        "middleName" to "Владимирович"
+    )
+    var student3=Student(student3Map)
+    println(student3.toString())
+    
+
+    var student4 = Student("Федоров Александр Геннадьевич")
+    println(student4.toString())
+
+    println(student1.getInfo())
 }

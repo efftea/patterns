@@ -198,15 +198,41 @@ class Student{
         email=hashStud.getOrDefault("email",null).toString()
         github=hashStud.getOrDefault("github",null).toString()
     }
-    
+
     constructor(input:String): this (input.split(" ")[0],input.split(" ")[1],input.split(" ")[2],input.split(" ").getOrNull(3),input.split(" ").getOrNull(4),input.split(" ").getOrNull(5),input.split(" ").getOrNull(6))
     {
+    }
+
+     fun getInfo() : String
+    {
+        var res ="ФИО: "+ lastName+" "+ firstName[0]+"."+ middleName[0]+". "
+        if(hasGitHub())
+        {
+            res+= " Гит: "+ github
+        }
+        var res2 = ""
+        if(hasContact())
+        {
+            if(email!=null)
+            {
+                res2 = " Почта: "+ email
+            }
+            if(phone!=null)
+            {
+                res2 = " Телефон: "+ phone
+            }
+            if(telegram!=null)
+            {
+                res2 = " Телеграм: "+ telegram
+            }
+        }
+        return res + res2
     }
 
     override fun toString() : String
     {
         var out = "ID: $id"
-        out+=", Фамиля: $lastName"
+        out+=", Фамилия: $lastName"
         out+=", Имя: $firstName"
         out+=", Отчество: $middleName"
         if(phone!=null)out+=", Телефон: $phone"
