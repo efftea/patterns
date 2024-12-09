@@ -42,10 +42,27 @@ fun main(args: Array<String>) {
 //    }
 //    Student.write_to_txt("src/main/kotlin/output.txt", studentFile)
 
-    var dtt=DataTable(arrayOf(arrayOf(1,2), arrayOf(3,4),arrayOf(5,6)))
-    println(dtt.getElementBy(2,1))
-    println(dtt.getRowsNum())
-    println(dtt.getColumnsNum())
+//    var dt=DataTable(arrayOf(arrayOf(1,2), arrayOf(3,4),arrayOf(5,6)))
+//    println(dt.getElementBy(2,1))
+//    println(dt.getRowsNum())
+//    println(dt.getColumnsNum())
 
-
+    var dlss=DataListStudentShort(mutableListOf(
+        StudentShort(student1),
+        StudentShort(student2),
+        StudentShort(student3),
+        StudentShort(student4)
+    ))
+    dlss.select(1)
+    dlss.select(2)
+    var dt=dlss.getTable()
+    for (i in 0..dt.getRows()-1)
+    {
+        for(j in 0..dt.getColumns()-1)
+        {
+            print(dt.getElement(i,j))
+            print(" ")
+        }
+        println()
+    }
 }
