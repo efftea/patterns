@@ -1,5 +1,5 @@
 class StudentShort : SuperStudentClass{
-    private var shortname: String? = null
+    var shortname: String? = null
         set(value)
         {
             field=value
@@ -8,16 +8,8 @@ class StudentShort : SuperStudentClass{
         {
             return field
         }
-    private var github: String? = null
-        set(value)
-        {
-            field=value
-        }
-        get()
-        {
-            return field
-        }
-    private var contact: String? = null
+
+    var contact: String? = null
         set(value)
         {
             field=value

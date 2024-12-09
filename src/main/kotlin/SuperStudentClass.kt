@@ -9,6 +9,18 @@ open class SuperStudentClass {
         {
             return field
         }
+    var github: String? = null
+        set(value)
+        {
+            if(validateGitHub(value))
+            {
+                field=value
+            }
+        }
+        get()
+        {
+            return field
+        }
 
     companion object
     {

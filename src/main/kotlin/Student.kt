@@ -78,17 +78,6 @@ class Student: SuperStudentClass{
             return field
         }
 
-    var github: String? = null
-        set(value)
-        {
-            if(validateGitHub(value)) {
-                field = value
-            }
-        }
-        get()
-        {
-            return field
-        }
 
     fun validate() : Boolean
     {
