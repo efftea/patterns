@@ -1,4 +1,4 @@
-class DataTable(private val data: Array<Array<Any?>>) {
+class DataTable(private val data: MutableList<List<Any?>>) {
 
     fun getElementBy(row:Int,column:Int):Any?
     {
