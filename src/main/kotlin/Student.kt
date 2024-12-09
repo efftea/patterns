@@ -141,9 +141,13 @@ class Student: SuperStudentClass{
     {
     }
 
-     fun getInfo() : String
+    constructor(toInt: Int, get: String, get1: String, get2: String, orNull: String?, orNull1: String?, orNull2: String?, orNull3: String?)
     {
-        var res ="ФИО: "+ lastName+" "+ firstName[0]+"."+ middleName[0]+". "
+    }
+
+    fun getInfo() : String
+    {
+        var res ="ФИО: "+ getShortName()
         if(hasGitHub())
         {
             res+= "Гит: "+ github
@@ -165,6 +169,11 @@ class Student: SuperStudentClass{
             }
         }
         return res + res2
+    }
+
+    fun getShortName(): String {
+        var res = lastName+" "+ firstName[0]+"."+ middleName[0]+". "
+        return res
     }
 
     override fun toString() : String

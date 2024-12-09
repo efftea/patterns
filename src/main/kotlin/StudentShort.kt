@@ -26,6 +26,7 @@ class StudentShort : SuperStudentClass{
         github=student.getInfo().split(" ").getOrNull(4)
         contact=student.getInfo().split(" ").getOrNull(6)
     }
+
     constructor(input:String)
     {
         id=ids
