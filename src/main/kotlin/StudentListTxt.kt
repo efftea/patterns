@@ -1,9 +1,11 @@
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
+import StudentListStrategy
 
-class StudentListTxt: SuperStudentListClass() {
-    fun readFromTxt(path:String)
+class StudentListTxt: SuperStudentListClass(), StudentListStrategy {
+
+    override fun readFromFile(path:String)
     {
         val file = File(path)
         var res = mutableListOf<Student>()
@@ -23,7 +25,7 @@ class StudentListTxt: SuperStudentListClass() {
         data= res
     }
 
-    fun writeToTxt(path: String)
+    override fun writeToFile(path: String)
     {
         val file = File(path)
         var text = ""
