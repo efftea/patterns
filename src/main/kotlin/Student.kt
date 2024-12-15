@@ -1,5 +1,11 @@
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.IOException
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonCreator
+
 class Student: SuperStudentClass{
-    var lastName: String = ""
+    @field:JsonProperty("lastName") var lastName: String = ""
         set(value)
         {
             if(validateLastName(value))
@@ -12,7 +18,7 @@ class Student: SuperStudentClass{
             return field
         }
 
-    var firstName: String = ""
+    @field:JsonProperty("firstName") var firstName: String = ""
         set(value)
         {
             if(validateFirstName(value))
@@ -25,7 +31,7 @@ class Student: SuperStudentClass{
             return field
         }
 
-    var middleName: String = ""
+    @field:JsonProperty("middleName") var middleName: String = ""
         set(value)
         {
             if(validateMiddleName(value))
@@ -38,7 +44,7 @@ class Student: SuperStudentClass{
             return field
         }
 
-    var phone: String? = null
+    @field:JsonProperty("phone") var phone: String? = null
         set(value)
         {
             if(validatePhone(value)) {
@@ -50,7 +56,7 @@ class Student: SuperStudentClass{
             return field
         }
 
-    var telegram: String? = null
+    @field:JsonProperty("telegram") var telegram: String? = null
         set(value)
         {
             if(validateTG(value)) {
@@ -62,7 +68,7 @@ class Student: SuperStudentClass{
             return field
         }
 
-    var email: String? = null
+    @field:JsonProperty("email") var email: String? = null
         set(value)
         {
             if(validateEMail(value)) {
@@ -104,6 +110,25 @@ class Student: SuperStudentClass{
         }
     }
 
+    @JsonCreator constructor(
+        @JsonProperty("id") _id: String = "0",
+        @JsonProperty("github") _github: String? = "",
+        @JsonProperty("lastName") _lastName: String = "",
+        @JsonProperty("firstName")  _firstName: String = "",
+        @JsonProperty("middleName")  _middleName: String = "",
+        @JsonProperty("phone")  _phone: String? = null,
+        @JsonProperty("telegram")  _telegram: String? = null,
+        @JsonProperty("email")  _email: String? = null,)
+    {
+        id=_id.toInt()
+        lastName=_lastName
+        firstName=_firstName
+        middleName=_middleName
+        phone=_phone
+        telegram=_telegram
+        email=_email
+        github=_github
+    }
 
     constructor(_lastName:String,_firstName:String,_middleName:String)
     {
@@ -116,6 +141,18 @@ class Student: SuperStudentClass{
     constructor(_lastName:String,_firstName:String,_middleName:String,_phone:String?=null,_telegram:String?=null,_email:String?=null,_github:String?=null)
     {
         id=ids
+        lastName=_lastName
+        firstName=_firstName
+        middleName=_middleName
+        phone=_phone
+        telegram=_telegram
+        email=_email
+        github=_github
+    }
+
+    constructor(_id:Int,_lastName:String,_firstName:String,_middleName:String,_phone:String?=null,_telegram:String?=null,_email:String?=null,_github:String?=null)
+    {
+        id = _id
         lastName=_lastName
         firstName=_firstName
         middleName=_middleName
@@ -141,9 +178,6 @@ class Student: SuperStudentClass{
     {
     }
 
-    constructor(toInt: Int, get: String, get1: String, get2: String, orNull: String?, orNull1: String?, orNull2: String?, orNull3: String?)
-    {
-    }
 
     fun getInfo() : String
     {
@@ -185,6 +219,16 @@ class Student: SuperStudentClass{
         if(phone!=null)out+=", Телефон: $phone"
         if(email!=null)out+=", Почта: $email"
         if(github!=null)out+=", Гит: $github"
+        return out
+    }
+
+    fun toString2() : String
+    {
+        var out = "$id $lastName $firstName $middleName"
+        if(phone!=null)out+=" $phone"
+        if(telegram!=null)out+=" $telegram"
+        if(email!=null)out+=" $email"
+        if(github!=null)out+=" $github"
         return out
     }
 }

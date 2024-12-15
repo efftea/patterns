@@ -1,32 +1,25 @@
 import java.io.File
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
+import com.fasterxml.jackson.module.kotlin.KotlinModule
+import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import java.io.FileNotFoundException
 import java.io.IOException
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import kotlin.io.path.Path
 
-class StudentListJSON {
+class StudentListYaml {
     var data:MutableList<Student> = mutableListOf()
     fun readFromFile(path:String)
     {
-        val listType = object : TypeToken<MutableList<Student>>() {}.type
-        var gson = Gson()
-        val file = File(path)
-        var text:String = ""
-        try {
-            text = file.readText()
-        } catch (e: FileNotFoundException) {
-            println("File not found")
-        } catch (e: IOException) {
-            println("Error reading file")
-        }
-        data = gson.fromJson(text,listType) ?: mutableListOf()
+        val mapper = ObjectMapper(YAMLFactory()).registerKotlinModule()
+        data = mapper.readValue(File(path), mapper.typeFactory.constructCollectionType(MutableList::class.java, Student::class.java))
     }
     fun writeToFile(path:String)
     {
-        var gson = Gson()
-        var json = gson.toJson(data)
         val file = File(path)
-        file.writeText(json)
+        val yamlMapper = ObjectMapper(YAMLFactory())
+        yamlMapper.writeValue(file, data)
     }
     fun getById(id:Int):Student?
     {

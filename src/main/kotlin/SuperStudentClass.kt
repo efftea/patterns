@@ -1,5 +1,7 @@
+import com.fasterxml.jackson.annotation.JsonProperty
+
 open class SuperStudentClass {
-    var id: Int = 0
+    @field:JsonProperty("id")  var id: Int = 0
         set(value)
         {
             if(value>0)
@@ -9,7 +11,7 @@ open class SuperStudentClass {
         {
             return field
         }
-    var github: String? = null
+    @field:JsonProperty("github") var github: String? = null
         set(value)
         {
             if(validateGitHub(value))
