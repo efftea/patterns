@@ -1,9 +1,9 @@
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
-import StudentListStrategy
+import StudentStrategy
 
-class StudentListTxt: SuperStudentListClass(), StudentListStrategy {
+class StudentListTxt: SuperStudentListClass(), StudentStrategy {
 
     override fun readFromFile(path:String)
     {

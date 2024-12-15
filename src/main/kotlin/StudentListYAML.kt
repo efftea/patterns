@@ -7,9 +7,9 @@ import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import java.io.FileNotFoundException
 import java.io.IOException
 import kotlin.io.path.Path
-import StudentListStrategy
+import StudentStrategy
 
-class StudentListYaml: SuperStudentListClass(), StudentListStrategy  {
+class StudentListYAML: SuperStudentListClass(), StudentStrategy  {
 
     override fun readFromFile(path:String)
     {

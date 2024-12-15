@@ -1,0 +1,11 @@
+---
+- id: 3
+  github: null
+  lastName: "Мищенко"
+  firstName: "Никита"
+  middleName: "Максимович"
+  phone: "77777777777"
+  telegram: null
+  email: "mishenko@mail.ru"
+  info: "ФИО: Мищенко Н.М.  Телефон: 77777777777"
+  shortName: "Мищенко Н.М. "

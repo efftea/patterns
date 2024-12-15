@@ -3,9 +3,9 @@ import java.io.FileNotFoundException
 import java.io.IOException
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import StudentListStrategy
+import StudentStrategy
 
-class StudentListJSON: SuperStudentListClass(), StudentListStrategy {
+class StudentListJSON: SuperStudentListClass(), StudentStrategy {
 
     override fun readFromFile(path:String)
     {
@@ -16,9 +16,9 @@ class StudentListJSON: SuperStudentListClass(), StudentListStrategy {
         try {
             text = file.readText()
         } catch (e: FileNotFoundException) {
-            println("File not found")
+            println("Файл не найден")
         } catch (e: IOException) {
-            println("Error reading file")
+            println("Ошибка при прочтении файла.")
         }
         data = gson.fromJson(text,listType) ?: mutableListOf()
     }
