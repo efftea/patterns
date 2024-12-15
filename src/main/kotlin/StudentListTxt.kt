@@ -2,10 +2,8 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
 
-class StudentListTxt {
-    var data:MutableList<Student> = mutableListOf()
-
-    fun read_from_txt(path:String)
+class StudentListTxt: SuperStudentListClass() {
+    fun readFromTxt(path:String)
     {
         val file = File(path)
         var res = mutableListOf<Student>()
@@ -25,7 +23,7 @@ class StudentListTxt {
         data= res
     }
 
-    fun write_to_txt(path: String)
+    fun writeToTxt(path: String)
     {
         val file = File(path)
         var text = ""
@@ -34,53 +32,5 @@ class StudentListTxt {
             text+=(stud.toString()+"\n")
         }
         file.writeText(text)
-    }
-
-    fun getById(id:Int):Student?
-    {
-        for(stud in data)
-        {
-            if(stud.id==id)
-            {
-                return stud
-            }
-        }
-        return null
-    }
-
-    fun getKNStudentShort(k: Int, n: Int) : DataList<StudentShort>
-    {
-        var s = data.subList((k-1)*n+1,n)
-        var ss = s.map{StudentShort(it)}
-        return DataList(ss)
-    }
-
-    fun sortByShortname()
-    {
-        data.sortBy { it.getShortName() }
-    }
-
-    fun addStudent(stud:Student)
-    {
-        data.add(stud)
-    }
-
-    fun replaceStudent(id:Int,stud: Student)
-    {
-        var st = getById(id)
-        var i=data.indexOf(st)
-        data.set(i,stud)
-    }
-
-    fun deleteStudent(id:Int)
-    {
-        var st = getById(id)
-        var i=data.indexOf(st)
-        data.removeAt(i)
-    }
-
-    fun getStudentShortCount():Int
-    {
-        return data.size
     }
 }
