@@ -8,13 +8,13 @@ class Companion {
    instance: StudentsListDB
 }
 class Companion {
+  + validateGitHub(String?): Boolean
+  + validatePhone(String?): Boolean
   + validateFirstName(String): Boolean
+  + validateMiddleName(String): Boolean
   + validateTG(String?): Boolean
   + validateEMail(String?): Boolean
-  + validatePhone(String?): Boolean
-  + validateGitHub(String?): Boolean
   + validateLastName(String): Boolean
-  + validateMiddleName(String): Boolean
    ids: Int
 }
 class DataList<T> {
@@ -44,12 +44,13 @@ class Student {
   + Student(Int, String, String, String, String?, String?, String?, String?): 
   + Student(HashMap<String, Object>): 
   + Student(String): 
-  + validate(): Boolean
+  + Student(String, Int): 
+  - hasGitHub(): Boolean
   + toString(): String
   - hasContact(): Boolean
-  - hasGitHub(): Boolean
-  + setContacts(String?, String?, String?): Unit
   + toString2(): String
+  + setContacts(String?, String?, String?): Unit
+  + validate(): Boolean
    lastName: String
    shortName: String
    email: String?
@@ -58,6 +59,33 @@ class Student {
    firstName: String
    telegram: String?
    middleName: String
+}
+class StudentList {
+  + StudentList(String): 
+  + updateStudent(Int, Student): Unit
+  + getById(Int): Student?
+  + addStudent(Student): Unit
+  + studentCount(): Int
+  + getKNStudentShort(Int, Int): DataList<StudentShort>
+  + deleteStudent(Int): Unit
+}
+class StudentListAdapter {
+  + StudentListAdapter(String): 
+  + addStudent(Student): Unit
+  + studentCount(): Int
+  + getKNStudentShort(Int, Int): DataList<StudentShort>
+  + updateStudent(Int, Student): Unit
+  + deleteStudent(Int): Unit
+  + getById(Int): Student?
+   path: String
+}
+interface StudentListInterface << interface >> {
+  + updateStudent(Int, Student): Unit
+  + studentCount(): Int
+  + getById(Int): Student?
+  + getKNStudentShort(Int, Int): DataList<StudentShort>
+  + deleteStudent(Int): Unit
+  + addStudent(Student): Unit
 }
 class StudentListJSON {
   + StudentListJSON(): 
@@ -72,8 +100,8 @@ class StudentListStrategy {
 }
 class StudentListTxt {
   + StudentListTxt(): 
-  + writeToFile(String): Unit
   + readFromFile(String): Unit
+  + writeToFile(String): Unit
 }
 class StudentListYAML {
   + StudentListYAML(): 
@@ -88,18 +116,18 @@ class StudentShort {
    shortname: String?
 }
 interface StudentStrategy << interface >> {
-  + readFromFile(String): Unit
   + writeToFile(String): Unit
+  + readFromFile(String): Unit
    data: List<Student>
 }
 class StudentsListDB {
   - StudentsListDB(): 
-  + executeQuery(String): ResultSet?
-  + getByID(Int): Unit
-  + deleteStudent(Int): Unit
-  + getKNStudentShort(Int, Int): List<StudentShort>
-  + updateStudent(Int, Student): Unit
+  + getById(Int): Student?
   + studentCount(): Int
+  + deleteStudent(Int): Unit
+  + executeQuery(String): ResultSet?
+  + updateStudent(Int, Student): Unit
+  + getKNStudentShort(Int, Int): DataList<StudentShort>
   + addStudent(Student): Unit
 }
 class SuperStudentClass {
@@ -110,11 +138,12 @@ class SuperStudentClass {
 class SuperStudentListClass {
   + SuperStudentListClass(): 
   + addStudent(Student): Unit
-  + replaceStudent(Int, Student): Unit
-  + getById(Int): Student?
-  + sortByShortname(): Unit
   + deleteStudent(Int): Unit
+  + studentCount(): Int
   + getKNStudentShort(Int, Int): DataList<StudentShort>
+  + updateStudent(Int, Student): Unit
+  + sortByShortname(): Unit
+  + getById(Int): Student?
    data: List<Student>
 }
 
@@ -122,6 +151,8 @@ Companion              +-[#820000,plain]-  StudentsListDB
 Companion              +-[#820000,plain]-  SuperStudentClass     
 DataListStudentShort   -[#000082,plain]-^  DataList              
 Student                -[#000082,plain]-^  SuperStudentClass     
+StudentList            -[#008200,dashed]-^  StudentListInterface  
+StudentListAdapter     -[#008200,dashed]-^  StudentListInterface  
 StudentListJSON        -[#008200,dashed]-^  StudentStrategy       
 StudentListJSON        -[#000082,plain]-^  SuperStudentListClass 
 StudentListStrategy    -[#000082,plain]-^  SuperStudentListClass 
@@ -130,4 +161,5 @@ StudentListTxt         -[#000082,plain]-^  SuperStudentListClass
 StudentListYAML        -[#008200,dashed]-^  StudentStrategy       
 StudentListYAML        -[#000082,plain]-^  SuperStudentListClass 
 StudentShort           -[#000082,plain]-^  SuperStudentClass     
+StudentsListDB         -[#008200,dashed]-^  StudentListInterface  
 @enduml

@@ -23,7 +23,7 @@ class StudentShort : SuperStudentClass{
 
     constructor(student:Student)
     {
-        id= student.id
+        id=student.id
         shortname=student.getInfo().split(" ")[1] + " " + student.getInfo().split(" ")[2]
         github=student.getInfo().split(" ").getOrNull(4)
         contact=student.getInfo().split(" ").getOrNull(6)

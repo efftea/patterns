@@ -1,7 +1,10 @@
+package Lists
+
+import Student
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
-import StudentStrategy
+import Lists.StudentStrategy
 
 class StudentListTxt: SuperStudentListClass(), StudentStrategy {
 
@@ -20,7 +23,18 @@ class StudentListTxt: SuperStudentListClass(), StudentStrategy {
         }
         for (line in text)
         {
-            res.add(Student(line.split(" ").get(0).toInt(),line.split(" ").get(1),line.split(" ").get(2),line.split(" ").get(3),line.split(" ").getOrNull(4),line.split(" ").getOrNull(5),line.split(" ").getOrNull(6),line.split(" ").getOrNull(7)))
+            res.add(
+                Student(
+                    line.split(" ").get(0).toInt(),
+                    line.split(" ").get(1),
+                    line.split(" ").get(2),
+                    line.split(" ").get(3),
+                    line.split(" ").getOrNull(4),
+                    line.split(" ").getOrNull(5),
+                    line.split(" ").getOrNull(6),
+                    line.split(" ").getOrNull(7)
+                )
+            )
         }
         data= res
     }

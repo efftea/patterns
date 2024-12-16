@@ -1,7 +1,13 @@
+package Lists
+
+import DataList
+import Student
+import StudentShort
+
 open class SuperStudentListClass {
     var data:MutableList<Student> = mutableListOf()
 
-    fun getById(id:Int):Student?
+    fun getById(id:Int): Student?
     {
         for(stud in data)
         {
@@ -17,7 +23,7 @@ open class SuperStudentListClass {
     fun getKNStudentShort(k: Int, n: Int) : DataList<StudentShort>
     {
         var s = data.subList((k-1)*n+1,n)
-        var ss = s.map{StudentShort(it)}
+        var ss = s.map{ StudentShort(it) }
         return DataList(ss)
     }
 
@@ -26,12 +32,12 @@ open class SuperStudentListClass {
         data.sortBy { it.getShortName() }
     }
 
-    fun addStudent(stud:Student)
+    fun addStudent(stud: Student)
     {
         data.add(stud)
     }
 
-    fun replaceStudent(id:Int,stud: Student)
+    fun updateStudent(id:Int,stud: Student)
     {
         var st = getById(id)
         var i=data.indexOf(st)
@@ -45,4 +51,8 @@ open class SuperStudentListClass {
         data.removeAt(i)
     }
 
+    fun studentCount():Int
+    {
+        return data.size
+    }
 }

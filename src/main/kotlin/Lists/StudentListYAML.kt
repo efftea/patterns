@@ -1,13 +1,11 @@
+package Lists
+
+import Student
 import java.io.File
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
-import com.fasterxml.jackson.module.kotlin.KotlinModule
-import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
-import java.io.FileNotFoundException
-import java.io.IOException
-import kotlin.io.path.Path
-import StudentStrategy
+import Lists.StudentStrategy
 
 class StudentListYAML: SuperStudentListClass(), StudentStrategy  {
 
