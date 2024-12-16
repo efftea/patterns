@@ -1,16 +1,11 @@
-class Student{
-    var id: Int = 0
-        set(value)
-        {
-            if(value>0)
-                field=value
-        }
-        get()
-        {
-            return field
-        }
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.IOException
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonCreator
 
-    var lastName: String = ""
+class Student: SuperStudentClass{
+    @field:JsonProperty("lastName") var lastName: String = ""
         set(value)
         {
             if(validateLastName(value))
@@ -23,7 +18,7 @@ class Student{
             return field
         }
 
-    var firstName: String = ""
+    @field:JsonProperty("firstName") var firstName: String = ""
         set(value)
         {
             if(validateFirstName(value))
@@ -36,7 +31,7 @@ class Student{
             return field
         }
 
-    var middleName: String = ""
+    @field:JsonProperty("middleName") var middleName: String = ""
         set(value)
         {
             if(validateMiddleName(value))
@@ -49,7 +44,7 @@ class Student{
             return field
         }
 
-    var phone: String? = null
+    @field:JsonProperty("phone") var phone: String? = null
         set(value)
         {
             if(validatePhone(value)) {
@@ -61,7 +56,7 @@ class Student{
             return field
         }
 
-    var telegram: String? = null
+    @field:JsonProperty("telegram") var telegram: String? = null
         set(value)
         {
             if(validateTG(value)) {
@@ -73,7 +68,7 @@ class Student{
             return field
         }
 
-    var email: String? = null
+    @field:JsonProperty("email") var email: String? = null
         set(value)
         {
             if(validateEMail(value)) {
@@ -85,53 +80,6 @@ class Student{
             return field
         }
 
-    var github: String? = null
-        set(value)
-        {
-            if(validateGitHub(value)) {
-                field = value
-            }
-        }
-        get()
-        {
-            return field
-        }
-
-    companion object
-    {
-        var ids=0
-        fun validatePhone(value:String?): Boolean
-        {
-            return value?.matches(Regex("""\+?\d{11}""")) ?: true
-        }
-
-        fun validateLastName(value:String): Boolean
-        {
-            return value.matches(Regex("""[A-Я]{1}[a-я]*"""))
-        }
-        fun validateFirstName(value:String): Boolean
-        {
-            return value.matches(Regex("""[A-Я]{1}[a-я]*"""))
-        }
-        fun validateMiddleName(value:String): Boolean
-        {
-            return value.matches(Regex("""[A-Я]{1}[a-я]*"""))
-        }
-
-        fun validateTG(value:String?): Boolean
-        {
-            return value?.matches(Regex("""\@{1}.*""")) ?: true
-        }
-        fun validateEMail(value:String?): Boolean
-        {
-            return value?.matches(Regex("""\w*\@\w*\.\w*""")) ?: true
-        }
-        fun validateGitHub(value:String?): Boolean
-        {
-            return value?.matches(Regex("""https://github.com/.*""")) ?: true
-        }
-
-    }
 
     fun validate() : Boolean
     {
@@ -162,9 +110,24 @@ class Student{
         }
     }
 
-    init
+    @JsonCreator constructor(
+        @JsonProperty("id") _id: String = "0",
+        @JsonProperty("github") _github: String? = "",
+        @JsonProperty("lastName") _lastName: String = "",
+        @JsonProperty("firstName")  _firstName: String = "",
+        @JsonProperty("middleName")  _middleName: String = "",
+        @JsonProperty("phone")  _phone: String? = null,
+        @JsonProperty("telegram")  _telegram: String? = null,
+        @JsonProperty("email")  _email: String? = null,)
     {
-        ids++
+        id=_id.toInt()
+        lastName=_lastName
+        firstName=_firstName
+        middleName=_middleName
+        phone=_phone
+        telegram=_telegram
+        email=_email
+        github=_github
     }
 
     constructor(_lastName:String,_firstName:String,_middleName:String)
@@ -187,6 +150,18 @@ class Student{
         github=_github
     }
 
+    constructor(_id:Int,_lastName:String,_firstName:String,_middleName:String,_phone:String?=null,_telegram:String?=null,_email:String?=null,_github:String?=null)
+    {
+        id = _id
+        lastName=_lastName
+        firstName=_firstName
+        middleName=_middleName
+        phone=_phone
+        telegram=_telegram
+        email=_email
+        github=_github
+    }
+
     constructor(hashStud: HashMap<String,Any?>)
     {
         id=ids
@@ -199,15 +174,66 @@ class Student{
         github=hashStud.getOrDefault("github",null).toString()
     }
 
+    constructor(input:String): this (input.split(" ")[0],input.split(" ")[1],input.split(" ")[2],input.split(" ").getOrNull(3),input.split(" ").getOrNull(4),input.split(" ").getOrNull(5),input.split(" ").getOrNull(6))
+    {
+
+    }
+
+
+    fun getInfo() : String
+    {
+        var res ="ФИО: "+ getShortName()
+        if(hasGitHub())
+        {
+            res+= "Гит: "+ github
+        }
+        var res2 = ""
+        if(hasContact())
+        {
+            if(telegram!=null)
+            {
+                res2 = " Телеграм: "+ telegram
+            }
+            else {
+                if (phone != null) {
+                    res2 = " Телефон: " + phone
+                }
+                else {
+                    if (email != null) {
+                        res2 = " Почта: " + email
+                    }
+                }
+            }
+
+
+        }
+        return res + res2
+    }
+
+    fun getShortName(): String {
+        var res = lastName+" "+ firstName[0]+"."+ middleName[0]+". "
+        return res
+    }
+
     override fun toString() : String
     {
         var out = "ID: $id"
-        out+=", Фамиля: $lastName"
+        out+=", Фамилия: $lastName"
         out+=", Имя: $firstName"
         out+=", Отчество: $middleName"
         if(phone!=null)out+=", Телефон: $phone"
         if(email!=null)out+=", Почта: $email"
         if(github!=null)out+=", Гит: $github"
+        return out
+    }
+
+    fun toString2() : String
+    {
+        var out = "$id $lastName $firstName $middleName"
+        if(phone!=null)out+=" $phone"
+        if(telegram!=null)out+=" $telegram"
+        if(email!=null)out+=" $email"
+        if(github!=null)out+=" $github"
         return out
     }
 }
