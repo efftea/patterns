@@ -3,6 +3,7 @@ import java.io.FileNotFoundException
 import java.io.IOException
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonCreator
+import java.sql.ResultSet
 
 class Student: SuperStudentClass{
     @field:JsonProperty("lastName") var lastName: String = ""
@@ -215,8 +216,9 @@ class Student: SuperStudentClass{
     }
 
     fun getShortName(): String {
-        var res = lastName+" "+ firstName[0]+"."+ middleName[0]+". "
-        return res
+        val firstInitial = if (firstName.isNotEmpty()) "${firstName[0]}." else ""
+        val middleInitial = if (middleName.isNotEmpty()) "${middleName[0]}." else ""
+        return "$lastName $firstInitial$middleInitial"
     }
 
     override fun toString() : String

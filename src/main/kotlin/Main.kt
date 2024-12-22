@@ -1,10 +1,14 @@
 import Lists.*
 import SQL.*
+import java.io.PrintStream
+import App
 
 fun main(args: Array<String>) {
-    var sl = StudentList("src/main/kotlin/input.txt")
-    sl.addStudent(Student("Кислица", "Данил", "Александрович"))
-    println(sl.getById(2).toString())
-    println(sl.getById(1).toString())
-    println(sl.studentCount())
+    val dbConnection = StudentsListDB()
+    val result = dbConnection.executeQuery("SELECT * FROM student")
+
+    if (result != null) {
+        App.create()
+    }
+
 }
