@@ -1,6 +1,8 @@
-import org.postgresql.jdbc.PgResultSet.toInt
+package student
 
-class StudentShort : SuperStudentClass{
+import student.SuperStudentClass
+
+class StudentShort : SuperStudentClass {
     var shortname: String? = null
         set(value)
         {
@@ -21,7 +23,7 @@ class StudentShort : SuperStudentClass{
             return field
         }
 
-    constructor(student:Student)
+    constructor(student: Student)
     {
         id=student.id
         shortname=student.getInfo().split(" ")[1] + " " + student.getInfo().split(" ")[2]
@@ -31,7 +33,7 @@ class StudentShort : SuperStudentClass{
 
     constructor(input:String)
     {
-        id=ids
+        id= SuperStudentClass.ids
         shortname=input.split(" ").getOrNull(1)
         github=input.split(" ").getOrNull(2)
         contact=input.split(" ").getOrNull(3)

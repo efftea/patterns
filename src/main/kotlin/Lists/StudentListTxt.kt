@@ -1,10 +1,9 @@
 package Lists
 
-import Student
+import student.Student
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
-import Lists.StudentStrategy
 
 class StudentListTxt: SuperStudentListClass(), StudentStrategy {
 

@@ -1,86 +1,40 @@
 package Lists
 
-import Student
-import StudentShort
-import DataList
-import Lists.StudentListJSON
-import Lists.StudentListTxt
-import Lists.StudentListYAML
-import Lists.StudentListStrategy
-import SQL.StudentsListDB
+import student.Student
+import student.StudentShort
+import datalist.DataList
+import datalist.DataListStudentShort
+import view.Filter
 
-interface StudentListInterface
-{
-    fun getById(id:Int):Student?
-    fun getKNStudentShort(k: Int, n: Int) : DataList<StudentShort>
-    fun addStudent(stud:Student): Int
-    fun updateStudent(id:Int,stud: Student)
-    fun deleteStudent(id:Int)
-    fun studentCount():Int
-}
+class StudentList(val studentList: StudentListInterface) {
 
-class StudentListAdapter(var path:String):StudentListInterface
-{
-    private var studentList: StudentListStrategy? = null
-    init {
-        if (path.split('.')[1]=="txt")
-            studentList= StudentListStrategy(StudentListTxt())
-        if (path.split('.')[1]=="json")
-            studentList= StudentListStrategy(StudentListJSON())
-        if (path.split('.')[1]=="yaml")
-            studentList= StudentListStrategy(StudentListYAML())
-        studentList?.readFromFile(path)
-    }
-    override fun getById(id: Int): Student? {
+    var filter: Filter? = null
+
+    fun getById(id: Int): Student? {
         return studentList?.getById(id)
     }
-    override fun getKNStudentShort(k: Int, n: Int): DataList<StudentShort> {
-        return studentList?.getKNStudentShort(k,n) ?:DataList(mutableListOf())
-    }
-    override fun addStudent(stud: Student): Int {
-        studentList?.addStudent(stud)
-        return TODO("Provide the return value")
-    }
-    override fun updateStudent(id: Int, stud: Student) {
-        studentList?.updateStudent(id,stud)
-    }
-    override fun deleteStudent(id: Int) {
-        studentList?.deleteStudent(id)
-    }
-    override fun studentCount(): Int {
-        return studentList?.studentCount()?:0
-    }
-}
 
-class StudentList(path: String):StudentListInterface {
-    private var studentList: StudentListInterface? = null
-    init{
-        if(path=="pg")
-        {
-            studentList=StudentsListDB.getInstance()
+    fun getKNStudentShort(k: Int, n: Int, studentFilter: Filter? = null): DataListStudentShort {
+        this.filter = studentFilter
+        if (studentFilter != null) {
+            this.studentList.initStudentFilter(studentFilter)
         }
-        else
-        {
-            studentList=StudentListAdapter(path)
-        }
+        return studentList.getKNStudentShort(k, n)
     }
-    override fun getById(id: Int): Student? {
-        return studentList?.getById(id)
+
+    fun addStudent(stud: Student): Int {
+        return studentList.addStudent(stud)
     }
-    override fun getKNStudentShort(k: Int, n: Int): DataList<StudentShort> {
-        return studentList?.getKNStudentShort(k,n) ?:DataList(mutableListOf())
+
+    fun updateStudent(id: Int, stud: Student) {
+        return  studentList.updateStudent(id,stud)
     }
-    override fun addStudent(stud: Student): Int {
-        studentList?.addStudent(stud)
-        return TODO("Provide the return value")
+
+     fun deleteStudent(id: Int) {
+         return studentList.deleteStudent(id)
     }
-    override fun updateStudent(id: Int, stud: Student) {
-        studentList?.updateStudent(id,stud)
-    }
-    override fun deleteStudent(id: Int) {
-        studentList?.deleteStudent(id)
-    }
-    override fun studentCount(): Int {
+
+     fun studentCount(): Int {
         return studentList?.studentCount()?:0
     }
 }

@@ -1,5 +1,10 @@
+package datalist
+import SQL.Pagination
+
 open class DataList<T>(val data: List<T>) {
     private var selected : MutableList<Int> = mutableListOf()
+
+    val pagination: Pagination = Pagination()
 
     fun select(ind:Int)
     {
@@ -14,9 +19,9 @@ open class DataList<T>(val data: List<T>) {
         return selected
     }
 
-    open fun getNames():Array<String>
+    open fun getNames():List<String>
     {
-        return arrayOf("Abstract","method")
+        return listOf("Abstract","method")
     }
 
     open fun getDataOfRows():MutableList<MutableList<Any?>>
@@ -30,5 +35,10 @@ open class DataList<T>(val data: List<T>) {
         var args=getDataOfRows()
         args[0]=names.toMutableList()
         return DataTable(args)
+    }
+
+    fun toList(): List<T> {
+        println(data.toList())
+        return data.toList()
     }
 }

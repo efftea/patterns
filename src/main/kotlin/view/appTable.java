@@ -1,4 +1,7 @@
+package view;
+
 import SQL.StudentsListDB;
+import student.Student;
 import view.Params;
 
 import javax.swing.*;
@@ -6,11 +9,15 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 import view.Filter;
 import view.Params;
 
-class App {
+
+import javax.swing.*;
+
+public class appTable {
     private static final int PAGE_SIZE = 20;
     private static int currentPage = 1;
     private static final StudentsListDB studentDB = new StudentsListDB();
@@ -230,6 +237,76 @@ class App {
     private static int LastPage(int totalItems) {
         int page = (int) Math.ceil((double) totalItems / PAGE_SIZE);
         return page == 0 ? 1 : page;
+    }
+
+    private static void showStudentForm(Student existingStudent, String title, Consumer<Student> onSave) {
+        JDialog dialog = new JDialog((Frame) null, title, true);
+        dialog.setSize(400, 300);
+        dialog.setLayout(new GridLayout(7, 2));
+
+        // Ïîëÿ äëÿ ââîäà äàííûõ
+        JTextField lastNameField = new JTextField(existingStudent != null ? existingStudent.getLastName() : "");
+        JTextField firstNameField = new JTextField(existingStudent != null ? existingStudent.getFirstName() : "");
+        JTextField middleNameField = new JTextField(existingStudent != null ? existingStudent.getMiddleName() : "");
+        JTextField telegramField = new JTextField(existingStudent != null && existingStudent.getTelegram() != null ? existingStudent.getTelegram() : "");
+        JTextField gitField = new JTextField(existingStudent != null && existingStudent.getGithub() != null ? existingStudent.getGithub() : "");
+        JTextField emailField = new JTextField(existingStudent != null && existingStudent.getEmail() != null ? existingStudent.getEmail() : "");
+
+        // Äîáàâëÿåì êîìïîíåíòû
+        dialog.add(new JLabel("Ôàìèëèÿ:"));
+        dialog.add(lastNameField);
+
+        dialog.add(new JLabel("Èìÿ:"));
+        dialog.add(firstNameField);
+
+        dialog.add(new JLabel("Îò÷åñòâî:"));
+        dialog.add(middleNameField);
+
+        dialog.add(new JLabel("Telegram:"));
+        dialog.add(telegramField);
+
+        dialog.add(new JLabel("GitHub:"));
+        dialog.add(gitField);
+
+        dialog.add(new JLabel("Email:"));
+        dialog.add(emailField);
+
+        // Êíîïêè
+        JButton saveButton = new JButton("Ñîõðàíèòü");
+        JButton cancelButton = new JButton("Îòìåíà");
+
+        dialog.add(saveButton);
+        dialog.add(cancelButton);
+
+        // Îáðàáîò÷èêè êíîïîê
+        saveButton.addActionListener(e -> {
+            // Ïðîñòàÿ âàëèäàöèÿ
+            String lastName = lastNameField.getText().trim();
+            String firstName = firstNameField.getText().trim();
+            String middleName = middleNameField.getText().trim();
+
+            if (lastName.isEmpty() || firstName.isEmpty() || middleName.isEmpty()) {
+                JOptionPane.showMessageDialog(dialog, "Ôàìèëèÿ, èìÿ è îò÷åñòâî îáÿçàòåëüíû äëÿ çàïîëíåíèÿ!", "Îøèáêà", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+
+            Student student = existingStudent != null ? existingStudent : new Student();
+            student.setLastName(lastName);
+            student.setFirstName(firstName);
+            student.setMiddleName(middleName);
+            student.setTelegram(telegramField.getText().trim());
+            student.setGithub(gitField.getText().trim());
+            student.setEmail(emailField.getText().trim());
+            student.validate();
+
+            dialog.dispose();
+        });
+
+        cancelButton.addActionListener(e -> dialog.dispose());
+
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
     }
 
 

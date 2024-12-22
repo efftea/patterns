@@ -1,15 +1,15 @@
 package SQL
 
 import Lists.StudentListInterface
-import StudentShort
-import Student
-import DataList
+import student.StudentShort
+import student.Student
+import datalist.*
 import view.Filter
 import view.Params
 import java.sql.*
 
 
-class StudentsListDB():StudentListInterface {
+class StudentsListDB(var filter: Filter? = null) :StudentListInterface {
     companion object {
         @Volatile
         private var instance: StudentsListDB? = null
@@ -18,6 +18,7 @@ class StudentsListDB():StudentListInterface {
                 instance ?: StudentsListDB().also { instance = it }
             }
     }
+
 
     private lateinit var connection: Connection
     init {
@@ -63,8 +64,7 @@ class StudentsListDB():StudentListInterface {
     }
 
 
-
-    override fun addStudent(student:Student): Int {
+    override fun addStudent(student: Student): Int {
         var input = "'${student.lastName}', '${student.firstName}', '${student.middleName}'"
         if (student.phone == null) {
             input += ", NULL"
@@ -113,6 +113,10 @@ class StudentsListDB():StudentListInterface {
         else{input+=", '${student.github}'"}
         executeQuery("UPDATE student SET (lastName, firstName, middleName, phone, telegram, email, github) = (${input}) WHERE id=${id};")
 
+    }
+
+    override fun initStudentFilter(studentFilter: Filter?) {
+        TODO("Not yet implemented")
     }
 
     override fun deleteStudent(id:Int)
@@ -183,11 +187,18 @@ class StudentsListDB():StudentListInterface {
         return "$query)"
     }
 
-
-    override fun getKNStudentShort(k:Int, n:Int):DataList<StudentShort>
+    override fun getKNStudentShort(k:Int, n:Int): DataListStudentShort
     {
-        val start = k*n
-        val result = executeQuery("SELECT * FROM student WHERE id > ${start} ORDER BY id LIMIT ${n};")
+        val page = n
+        val pageSize = k
+        if (this.filter != null) {
+            return DataListStudentShort(getFilterStudentList(page = pageSize, pageSize = pageSize, filter!!), 1)
+        }
+        val offset = (page - 1) * pageSize
+        val query = "SELECT * FROM student ORDER BY id LIMIT $pageSize OFFSET $offset"
+        val studentShortList = mutableListOf<StudentShort>()
+
+        val result = executeQuery(query)
         var input = ""
         var sl=mutableListOf<Student>()
         if (result != null) {
@@ -199,8 +210,8 @@ class StudentsListDB():StudentListInterface {
                 sl.add(Student(input,result.getInt(1)))
             }
         }
-        var ss = sl.map{StudentShort(it)}
-        return DataList(ss)
+        var ss = sl.map{ StudentShort(it) }
+        return DataListStudentShort(ss)
     }
 
     fun getFilterStudentList(

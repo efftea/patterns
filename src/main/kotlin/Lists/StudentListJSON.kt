@@ -1,12 +1,11 @@
 package Lists
 
-import Student
+import student.Student
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import Lists.StudentStrategy
 
 class StudentListJSON: SuperStudentListClass(), StudentStrategy {
 

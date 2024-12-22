@@ -1,14 +1,9 @@
-import Lists.*
 import SQL.*
-import java.io.PrintStream
-import App
+import controller.studentListController
+import view.*
 
 fun main(args: Array<String>) {
-    val dbConnection = StudentsListDB()
-    val result = dbConnection.executeQuery("SELECT * FROM student")
-
-    if (result != null) {
-        App.create()
-    }
-
+    val view = app()
+    val controller = studentListController(StudentsListDB(), view)
+    view.create(controller)
 }

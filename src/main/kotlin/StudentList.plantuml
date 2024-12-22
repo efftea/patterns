@@ -17,34 +17,34 @@ class Companion {
   + validateLastName(String): Boolean
    ids: Int
 }
-class DataList<T> {
-  + DataList(List<T>): 
+class datalist.DataList<T> {
+  + datalist.DataList(List<T>):
   + select(Int): Unit
    dataOfRows: List<List<Object>>
-   table: DataTable
+   table: datalist.DataTable
    names: String[]
    data: List<T>
    selected: List<Int>
 }
-class DataListStudentShort {
-  + DataListStudentShort(List<StudentShort>): 
+class datalist.DataListStudentShort {
+  + datalist.DataListStudentShort(List<student.StudentShort>):
    dataOfRows: List<List<Object>>
    names: String[]
 }
-class DataTable {
-  + DataTable(List<List<Object>>): 
+class datalist.DataTable {
+  + datalist.DataTable(List<List<Object>>):
   + getElementBy(Int, Int): Object?
    rowsNum: Int
    columnsNum: Int
 }
-class Student {
-  + Student(String, String?, String, String, String, String?, String?, String?): 
-  + Student(String, String, String): 
-  + Student(String, String, String, String?, String?, String?, String?): 
-  + Student(Int, String, String, String, String?, String?, String?, String?): 
-  + Student(HashMap<String, Object>): 
-  + Student(String): 
-  + Student(String, Int): 
+class student.Student {
+  + student.Student(String, String?, String, String, String, String?, String?, String?):
+  + student.Student(String, String, String):
+  + student.Student(String, String, String, String?, String?, String?, String?):
+  + student.Student(Int, String, String, String, String?, String?, String?, String?):
+  + student.Student(HashMap<String, Object>):
+  + student.Student(String):
+  + student.Student(String, Int):
   - hasGitHub(): Boolean
   + toString(): String
   - hasContact(): Boolean
@@ -62,30 +62,30 @@ class Student {
 }
 class StudentList {
   + StudentList(String): 
-  + updateStudent(Int, Student): Unit
-  + getById(Int): Student?
-  + addStudent(Student): Unit
+  + updateStudent(Int, student.Student): Unit
+  + getById(Int): student.Student?
+  + addStudent(student.Student): Unit
   + studentCount(): Int
-  + getKNStudentShort(Int, Int): DataList<StudentShort>
+  + getKNStudentShort(Int, Int): datalist.DataList<student.StudentShort>
   + deleteStudent(Int): Unit
 }
 class StudentListAdapter {
   + StudentListAdapter(String): 
-  + addStudent(Student): Unit
+  + addStudent(student.Student): Unit
   + studentCount(): Int
-  + getKNStudentShort(Int, Int): DataList<StudentShort>
-  + updateStudent(Int, Student): Unit
+  + getKNStudentShort(Int, Int): datalist.DataList<student.StudentShort>
+  + updateStudent(Int, student.Student): Unit
   + deleteStudent(Int): Unit
-  + getById(Int): Student?
+  + getById(Int): student.Student?
    path: String
 }
 interface StudentListInterface << interface >> {
-  + updateStudent(Int, Student): Unit
+  + updateStudent(Int, student.Student): Unit
   + studentCount(): Int
-  + getById(Int): Student?
-  + getKNStudentShort(Int, Int): DataList<StudentShort>
+  + getById(Int): student.Student?
+  + getKNStudentShort(Int, Int): datalist.DataList<student.StudentShort>
   + deleteStudent(Int): Unit
-  + addStudent(Student): Unit
+  + addStudent(student.Student): Unit
 }
 class StudentListJSON {
   + StudentListJSON(): 
@@ -108,9 +108,9 @@ class StudentListYAML {
   + writeToFile(String): Unit
   + readFromFile(String): Unit
 }
-class StudentShort {
-  + StudentShort(Student): 
-  + StudentShort(String): 
+class student.StudentShort {
+  + student.StudentShort(student.Student):
+  + student.StudentShort(String):
   + toString(): String
    contact: String?
    shortname: String?
@@ -118,39 +118,39 @@ class StudentShort {
 interface StudentStrategy << interface >> {
   + writeToFile(String): Unit
   + readFromFile(String): Unit
-   data: List<Student>
+   data: List<student.Student>
 }
 class StudentsListDB {
   - StudentsListDB(): 
-  + getById(Int): Student?
+  + getById(Int): student.Student?
   + studentCount(): Int
   + deleteStudent(Int): Unit
   + executeQuery(String): ResultSet?
-  + updateStudent(Int, Student): Unit
-  + getKNStudentShort(Int, Int): DataList<StudentShort>
-  + addStudent(Student): Unit
+  + updateStudent(Int, student.Student): Unit
+  + getKNStudentShort(Int, Int): datalist.DataList<student.StudentShort>
+  + addStudent(student.Student): Unit
 }
-class SuperStudentClass {
-  + SuperStudentClass(): 
+class student.SuperStudentClass {
+  + student.SuperStudentClass():
    github: String?
    id: Int
 }
 class SuperStudentListClass {
   + SuperStudentListClass(): 
-  + addStudent(Student): Unit
+  + addStudent(student.Student): Unit
   + deleteStudent(Int): Unit
   + studentCount(): Int
-  + getKNStudentShort(Int, Int): DataList<StudentShort>
-  + updateStudent(Int, Student): Unit
+  + getKNStudentShort(Int, Int): datalist.DataList<student.StudentShort>
+  + updateStudent(Int, student.Student): Unit
   + sortByShortname(): Unit
-  + getById(Int): Student?
-   data: List<Student>
+  + getById(Int): student.Student?
+   data: List<student.Student>
 }
 
 Companion              +-[#820000,plain]-  StudentsListDB        
-Companion              +-[#820000,plain]-  SuperStudentClass     
-DataListStudentShort   -[#000082,plain]-^  DataList              
-Student                -[#000082,plain]-^  SuperStudentClass     
+Companion              +-[#820000,plain]-  student.SuperStudentClass
+datalist.DataListStudentShort   -[#000082,plain]-^  datalist.DataList
+student.Student                -[#000082,plain]-^  student.SuperStudentClass
 StudentList            -[#008200,dashed]-^  StudentListInterface  
 StudentListAdapter     -[#008200,dashed]-^  StudentListInterface  
 StudentListJSON        -[#008200,dashed]-^  StudentStrategy       
@@ -160,6 +160,6 @@ StudentListTxt         -[#008200,dashed]-^  StudentStrategy
 StudentListTxt         -[#000082,plain]-^  SuperStudentListClass 
 StudentListYAML        -[#008200,dashed]-^  StudentStrategy       
 StudentListYAML        -[#000082,plain]-^  SuperStudentListClass 
-StudentShort           -[#000082,plain]-^  SuperStudentClass     
+student.StudentShort           -[#000082,plain]-^  student.SuperStudentClass
 StudentsListDB         -[#008200,dashed]-^  StudentListInterface  
 @enduml

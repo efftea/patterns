@@ -1,11 +1,10 @@
 package Lists
 
-import Student
+import student.Student
 import java.io.File
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
-import Lists.StudentStrategy
 
 class StudentListYAML: SuperStudentListClass(), StudentStrategy  {
 

@@ -1,6 +1,5 @@
 package Lists
-import Lists.SuperStudentListClass
-import Student
+import student.Student
 
 interface StudentStrategy {
     var data:MutableList<Student>
