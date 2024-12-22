@@ -1,8 +1,17 @@
 package controller
 
 import student.Student;
+import SQL.StudentsListDB
+import Lists.StudentList
 
-abstract class FormControll {
+abstract class FormControll(
+    val studentListController: studentListController,
+    val studentList: StudentList
+) {
+    constructor(studentListController: studentListController) : this(
+        studentListController,
+        StudentList(StudentsListDB())
+    )
 
     fun processForm(
         existingStudent: Student?,
@@ -25,5 +34,10 @@ abstract class FormControll {
         return student
     }
 
-    abstract fun saveProcessedStudent(student: Student): String
+    fun getStudentById(id: Int): Student? {
+        return studentList.getById(id)
+    }
+    abstract fun saveProcessedStudent(student: Student, id: Int?): String
+
+    abstract fun getAccessFields(): ArrayList<String>
 }

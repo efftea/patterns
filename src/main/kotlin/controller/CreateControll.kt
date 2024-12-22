@@ -5,13 +5,13 @@ import SQL.StudentsListDB
 import student.Student
 
 class CreateControll(
-    val studentListController: studentListController,
-    val studentList: StudentList
-): FormControll() {
+    studentListController: studentListController,
+    studentList: StudentList
+): FormControll(studentListController,studentList) {
 
     constructor(studentListController: studentListController): this(studentListController, StudentList(StudentsListDB()))
 
-    override fun saveProcessedStudent(student: Student): String {
+    override fun saveProcessedStudent(student: Student, id: Int?): String {
         val id = studentList.addStudent(student)
         if (id > 0) {
             studentListController.refresh_data()
@@ -19,5 +19,9 @@ class CreateControll(
         } else {
             return "Ошибка при добавлении студента."
         }
+    }
+
+    override fun getAccessFields(): ArrayList<String> {
+        return arrayListOf("Фамилия", "Имя", "Отчество", "Telegram", "GitHub", "Email")
     }
 }

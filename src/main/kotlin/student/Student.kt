@@ -192,7 +192,7 @@ class Student: SuperStudentClass {
         var res ="ФИО: "+ getShortName()
         if(hasGitHub())
         {
-            res+= "Гит: "+ github
+            res+= " Гит: "+ github
         }
         var res2 = ""
         if(hasContact())

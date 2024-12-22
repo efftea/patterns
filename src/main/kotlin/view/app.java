@@ -101,6 +101,18 @@ public class app implements view{
             modal.create(null, "Создание студента");
         });
 
+        editButton.addActionListener(e -> {
+            UpdateControll uc = new UpdateControll(this.controller);
+            appModal modal = new appModal();
+            modal.controller = uc;
+            int selectedRow = table.getSelectedRow();
+            if (selectedRow >= 0) {
+                int id = (int) tableModel.getValueAt(selectedRow, 0);
+                Student student = uc.getStudentById(id);
+                modal.create(student, "Обновлекние студента");
+            }
+        });
+
         nextPageButton.addActionListener(e -> {
             currentPage++;
             controller.refresh_data(PAGE_SIZE, currentPage, getCurrentFilter());
@@ -118,6 +130,9 @@ public class app implements view{
         });
 
         buttonPanel.add(pageInfoLabel);
+        buttonPanel.add(addButton);
+        buttonPanel.add(editButton);
+        buttonPanel.add(deleteButton);
         buttonPanel.add(prevPageButton);
         buttonPanel.add(nextPageButton);
         buttonPanel.add(refreshButton);
