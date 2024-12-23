@@ -2,7 +2,7 @@ package controller
 
 import Lists.StudentList
 import SQL.StudentsListDB
-import student.Student
+import model.Student
 
 class UpdateControll(
     studentListController: studentListController,

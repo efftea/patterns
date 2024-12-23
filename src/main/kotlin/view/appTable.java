@@ -1,8 +1,7 @@
 package view;
 
 import SQL.StudentsListDB;
-import student.Student;
-import view.Params;
+import model.Student;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -10,12 +9,6 @@ import java.awt.*;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
-
-import view.Filter;
-import view.Params;
-
-
-import javax.swing.*;
 
 public class appTable {
     private static final int PAGE_SIZE = 20;

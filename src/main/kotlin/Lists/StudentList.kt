@@ -1,8 +1,6 @@
 package Lists
 
-import student.Student
-import student.StudentShort
-import datalist.DataList
+import model.Student
 import datalist.DataListStudentShort
 import view.Filter
 

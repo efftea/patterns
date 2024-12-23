@@ -1,6 +1,6 @@
 package Lists
 
-import student.Student
+import model.Student
 import java.io.File
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory

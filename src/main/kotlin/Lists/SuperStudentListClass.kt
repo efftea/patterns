@@ -1,8 +1,8 @@
 package Lists
 
 import datalist.DataList
-import student.Student
-import student.StudentShort
+import model.Student
+import model.StudentShort
 
 open class SuperStudentListClass {
     var data:MutableList<Student> = mutableListOf()

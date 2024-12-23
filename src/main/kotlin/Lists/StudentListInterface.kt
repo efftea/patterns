@@ -1,8 +1,7 @@
 package Lists
 
 import datalist.DataListStudentShort
-import student.Student
-import student.StudentShort
+import model.Student
 import view.Filter
 
 interface StudentListInterface

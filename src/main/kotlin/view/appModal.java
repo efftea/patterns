@@ -2,11 +2,10 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.function.Consumer;
 import java.util.ArrayList;
 
 import controller.*;
-import student.*;
+import model.*;
 
 public class appModal {
     FormControll controller;

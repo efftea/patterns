@@ -1,5 +1,5 @@
 package Lists
-import student.Student
+import model.Student
 
 interface StudentStrategy {
     var data:MutableList<Student>

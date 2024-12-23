@@ -1,6 +1,5 @@
-package student
+package model
 
-import student.SuperStudentClass
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonCreator
 
@@ -229,6 +228,7 @@ class Student: SuperStudentClass {
         out+=", Фамилия: $lastName"
         out+=", Имя: $firstName"
         out+=", Отчество: $middleName"
+        if(telegram!=null)out+=", Телеграм: $telegram"
         if(phone!=null)out+=", Телефон: $phone"
         if(email!=null)out+=", Почта: $email"
         if(github!=null)out+=", Гит: $github"

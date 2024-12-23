@@ -1,7 +1,7 @@
 package Lists
 
 import datalist.DataListStudentShort
-import student.Student
+import model.Student
 import view.Filter
 
 class StudentListAdapter(private val studentListF: StudentList, var filter: Filter? = null):StudentListInterface

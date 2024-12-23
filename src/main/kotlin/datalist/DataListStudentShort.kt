@@ -1,10 +1,9 @@
 package datalist
 
-import datalist.DataList
 import observer.observerServ
 import observer.observer
-import student.Student
-import student.StudentShort
+import model.Student
+import model.StudentShort
 
 class DataListStudentShort(studentList: List<StudentShort>) : DataList<StudentShort>(studentList), observerServ {
 

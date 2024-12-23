@@ -1,8 +1,8 @@
 package SQL
 
 import Lists.StudentListInterface
-import student.StudentShort
-import student.Student
+import model.StudentShort
+import model.Student
 import datalist.*
 import view.Filter
 import view.Params

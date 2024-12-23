@@ -1,6 +1,4 @@
-package student
-
-import student.SuperStudentClass
+package model
 
 class StudentShort : SuperStudentClass {
     var shortname: String? = null

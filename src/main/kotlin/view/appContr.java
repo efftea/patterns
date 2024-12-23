@@ -2,10 +2,9 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 import controller.*;
-import student.*;
+import model.*;
 
 public class appContr {
     studentListController controller;

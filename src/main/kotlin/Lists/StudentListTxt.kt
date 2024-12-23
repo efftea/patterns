@@ -1,6 +1,6 @@
 package Lists
 
-import student.Student
+import model.Student
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException

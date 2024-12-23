@@ -7,9 +7,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-import student.Student;
+import model.Student;
 import datalist.*;
-import student.StudentShort;
+import model.StudentShort;
 import controller.*;
 
 public class app implements view{

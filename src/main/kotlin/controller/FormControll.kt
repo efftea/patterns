@@ -1,6 +1,6 @@
 package controller
 
-import student.Student;
+import model.Student;
 import SQL.StudentsListDB
 import Lists.StudentList
 

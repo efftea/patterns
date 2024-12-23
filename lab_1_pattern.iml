@@ -18,5 +18,7 @@
     <orderEntry type="library" name="jetbrains.kotlinx.serialization.core.jvm" level="project" />
     <orderEntry type="library" name="jetbrains.kotlinx.serialization.json.jvm" level="project" />
     <orderEntry type="library" name="postgresql" level="project" />
+    <orderEntry type="library" name="junit" level="project" />
+    <orderEntry type="library" name="junit.jupiter" level="project" />
   </component>
 </module>
