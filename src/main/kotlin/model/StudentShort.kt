@@ -21,12 +21,13 @@ class StudentShort : SuperStudentClass {
             return field
         }
 
+
     constructor(student: Student)
     {
         id=student.id
-        shortname=student.getInfo().split(" ")[1] + " " + student.getInfo().split(" ")[2]
-        github=student.getInfo().split(" ").getOrNull(4)
-        contact=student.getInfo().split(" ").getOrNull(6)
+        shortname=student.getShortName()
+        github=student.getGitHubInfo()
+        contact=student.getContactInfo()
     }
 
     constructor(input:String)
@@ -35,6 +36,18 @@ class StudentShort : SuperStudentClass {
         shortname=input.split(" ").getOrNull(1)
         github=input.split(" ").getOrNull(2)
         contact=input.split(" ").getOrNull(3)
+    }
+
+    override fun getShortNameInfo(): String? {
+        return this.shortname
+    }
+
+    override fun getContactInfo(): String? {
+        return this.contact
+    }
+
+    override fun getGitHubInfo(): String? {
+        return this.github
     }
 
     override fun toString() : String

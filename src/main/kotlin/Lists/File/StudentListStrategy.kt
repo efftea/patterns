@@ -1,4 +1,5 @@
-package Lists
+package Lists.File
+import Lists.SuperStudentListClass
 import model.Student
 
 interface StudentStrategy {

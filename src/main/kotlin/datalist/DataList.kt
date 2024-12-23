@@ -38,7 +38,6 @@ open class DataList<T>(val data: List<T>) {
     }
 
     fun toList(): List<T> {
-        println(data.toList())
         return data.toList()
     }
 }

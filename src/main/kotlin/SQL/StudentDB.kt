@@ -1,6 +1,6 @@
 package SQL
 
-import Lists.StudentListInterface
+import Lists.BD.StudentListInterface
 import model.StudentShort
 import model.Student
 import datalist.*
@@ -9,7 +9,7 @@ import view.Params
 import java.sql.*
 
 
-class StudentsListDB(var filter: Filter? = null) :StudentListInterface {
+class StudentsListDB(var filter: Filter? = null) : StudentListInterface {
     companion object {
         @Volatile
         private var instance: StudentsListDB? = null
@@ -86,7 +86,7 @@ class StudentsListDB(var filter: Filter? = null) :StudentListInterface {
         } else {
             input += ", '${student.github}'"
         }
-        println(input)
+
         val result =
             executeQuery("INSERT INTO student (lastName, firstName, middleName, phone, telegram, email, github) VALUES (${input});")
         if (result != null) {
@@ -115,10 +115,6 @@ class StudentsListDB(var filter: Filter? = null) :StudentListInterface {
         return true
     }
 
-    override fun initStudentFilter(studentFilter: Filter?) {
-        TODO("Not yet implemented")
-    }
-
     override fun deleteStudent(id:Int): Boolean
     {
         executeQuery("DELETE FROM student WHERE id=${id};")
@@ -130,7 +126,6 @@ class StudentsListDB(var filter: Filter? = null) :StudentListInterface {
         val result=executeQuery("SELECT COUNT(*) FROM student;")
         if(result!=null)
         {
-            println(result)
             if(result.next())
                 return result.getString("count").toInt()
         }
@@ -143,6 +138,7 @@ class StudentsListDB(var filter: Filter? = null) :StudentListInterface {
         value: String,
         column_name: String
     ): String {
+
         var new_query = query
         if (search == Params.YES) {
             new_query += " AND $column_name IS NOT NULL AND $column_name!=''"
@@ -159,7 +155,7 @@ class StudentsListDB(var filter: Filter? = null) :StudentListInterface {
     private fun filterQuery(filter: Filter): String {
         var query = "WHERE (TRUE"
         val nameFilter = filter.nameFilter
-        if (nameFilter.isNotEmpty()) query += " AND last_name || ' ' || first_name ILIKE '%$nameFilter%'"
+        if (nameFilter.isNotEmpty()) query += " AND lastname || ' ' || firstname ILIKE '%$nameFilter%'"
         query = updateFilterQuery(
             query,
             filter.gitSearch,
@@ -184,8 +180,11 @@ class StudentsListDB(var filter: Filter? = null) :StudentListInterface {
             filter.telegramFilter,
             "telegram"
         )
-
         return "$query)"
+    }
+
+    override fun initStudentFilter(studentFilter: Filter?) {
+        this.filter = studentFilter
     }
 
     override fun getKNStudentShort(k:Int, n:Int): DataListStudentShort
@@ -193,7 +192,7 @@ class StudentsListDB(var filter: Filter? = null) :StudentListInterface {
         val page = n
         val pageSize = k
         if (this.filter != null) {
-            return DataListStudentShort(getFilterStudentList(page = pageSize, pageSize = pageSize, filter!!), 1)
+            return DataListStudentShort(getFilterStudentList(page = page, pageSize = pageSize, filter!!), 1)
         }
         val offset = (page - 1) * pageSize
         val query = "SELECT * FROM student ORDER BY id LIMIT $pageSize OFFSET $offset"
@@ -212,6 +211,7 @@ class StudentsListDB(var filter: Filter? = null) :StudentListInterface {
             }
         }
         var ss = sl.map{ StudentShort(it) }
+
         return DataListStudentShort(ss)
     }
 
@@ -221,18 +221,21 @@ class StudentsListDB(var filter: Filter? = null) :StudentListInterface {
         filter: Filter,
     ): List<Student> {
         val offset = (page - 1) * pageSize
+
         val result = executeQuery("SELECT * FROM student ${filterQuery(filter)} ORDER BY id LIMIT $pageSize OFFSET $offset")
         val sl = mutableListOf<Student>()
-
+        println("SELECT * FROM student ${filterQuery(filter)} ORDER BY id LIMIT $pageSize OFFSET $offset")
         if (result != null) {
             while (result.next()) {
                 val input = StringBuilder()
-                for (i in 2..result.metaData.columnCount) { // Начинаем с 1
+                for (i in 2..result.metaData.columnCount) {
                     input.append(result.getString(i)).append(" ")
                 }
-                sl.add(Student(input.toString(), result.getInt(1))) // Добавляем студента
+                sl.add(Student(input.toString(), result.getInt(1)))
+
             }
         }
+
         return sl
     }
 

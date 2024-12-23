@@ -2,7 +2,7 @@ package controller
 
 import model.Student;
 import SQL.StudentsListDB
-import Lists.StudentList
+import Lists.BD.StudentList
 
 abstract class FormControll(
     val studentListController: studentListController,
@@ -10,7 +10,7 @@ abstract class FormControll(
 ) {
     constructor(studentListController: studentListController) : this(
         studentListController,
-        StudentList(StudentsListDB())
+        studentListController.getStudentsList()
     )
 
     fun processForm(

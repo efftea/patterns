@@ -2,7 +2,7 @@ package model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-open class SuperStudentClass {
+abstract class SuperStudentClass {
     @field:JsonProperty("id")  var id: Int = 0
         set(value)
         {
@@ -63,5 +63,15 @@ open class SuperStudentClass {
     init
     {
         ids++
+    }
+    abstract fun getShortNameInfo(): String?
+    abstract fun getContactInfo(): String?
+    abstract fun getGitHubInfo(): String?
+
+    open fun getInfo(): String {
+        val ShortName = getShortNameInfo()
+        val contactInfo = getContactInfo()
+        val git = getGitHubInfo()
+        return "$ShortName; $git; $contactInfo"
     }
 }

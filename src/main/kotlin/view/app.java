@@ -6,6 +6,11 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
+import java.util.Objects;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Comparator;
+import javax.swing.table.TableRowSorter;
 
 import model.Student;
 import datalist.*;
@@ -68,7 +73,7 @@ public class app implements view{
 
     private JPanel createStudentTab() {
         JPanel panel = new JPanel(new BorderLayout());
-
+        addFilters(panel);
         String[] columnNames = { "ID", "Фамилия Инициалы", "Git", "Email", "Телефон", "Telegram" };
 
         // Инициализация tableModel
@@ -80,7 +85,22 @@ public class app implements view{
         };
 
         JTable table = new JTable(tableModel);
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+        table.setRowSorter(sorter);
+
+        sorter.setComparator(1, Comparator.comparing(String::toString));
+        table.getTableHeader().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int column = table.columnAtPoint(e.getPoint());
+                if (column == 1) {
+                    sorter.toggleSortOrder(column);
+                }
+            }
+        });
+
         JScrollPane scrollPane = new JScrollPane(table);
 
         JPanel buttonPanel = new JPanel();
@@ -148,7 +168,7 @@ public class app implements view{
         });
 
         refreshButton.addActionListener(e -> {
-            controller.refresh_data(PAGE_SIZE, currentPage, getCurrentFilter());
+            updateFilter();
         });
 
         buttonPanel.add(pageInfoLabel);
@@ -205,5 +225,73 @@ public class app implements view{
                     student.getContact(),
             });
         }
+    }
+
+    public void updateFilter() {
+        String nameFilter = nameField.getText().trim();
+        Params gitSearch = Params.create(
+                (String) Objects.requireNonNull(gitComboBox.getSelectedItem())
+        );
+        String gitFilter = gitField.getText().trim();
+        Params emailSearch = Params.create(
+                (String) Objects.requireNonNull(emailComboBox.getSelectedItem())
+        );
+        String emailFilter = emailField.getText().trim();
+        Params phoneSearch = Params.create(
+                (String) Objects.requireNonNull(phoneComboBox.getSelectedItem())
+        );
+        String phoneFilter = phoneField.getText().trim();
+        Params telegramSearch = Params.create(
+                (String) Objects.requireNonNull(telegramComboBox.getSelectedItem())
+        );
+        String telegramFilter = telegramField.getText().trim();
+
+        Filter studentFilter = new Filter(
+                nameFilter,
+                gitFilter,
+                emailFilter,
+                phoneFilter,
+                telegramFilter,
+                gitSearch,
+                phoneSearch,
+                telegramSearch,
+                emailSearch
+        );
+        controller.refresh_data(PAGE_SIZE, currentPage, studentFilter);
+    }
+
+    private void addFilters(JPanel panel) {
+
+        JPanel filterPanel = new JPanel(new GridLayout(5, 3));
+        filterPanel.setBorder(BorderFactory.createTitledBorder("Фильтрация"));
+
+        setupFilter(gitComboBox, gitField);
+        setupFilter(emailComboBox, emailField);
+        setupFilter(phoneComboBox, phoneField);
+        setupFilter(telegramComboBox, telegramField);
+
+        filterPanel.add(new JLabel("Фамилия и инициалы:"));
+        filterPanel.add(nameField);
+        filterPanel.add(new JLabel());
+        filterPanel.add(new JLabel("GitHub:"));
+        filterPanel.add(gitComboBox);
+        filterPanel.add(gitField);
+        filterPanel.add(new JLabel("Email:"));
+        filterPanel.add(emailComboBox);
+        filterPanel.add(emailField);
+        filterPanel.add(new JLabel("Телефон:"));
+        filterPanel.add(phoneComboBox);
+        filterPanel.add(phoneField);
+        filterPanel.add(new JLabel("Telegram:"));
+        filterPanel.add(telegramComboBox);
+        filterPanel.add(telegramField);
+        panel.add(filterPanel, BorderLayout.NORTH);
+    }
+
+    private static void setupFilter(JComboBox<String> comboBox, JTextField textField) {
+        textField.setEnabled(false);
+        comboBox.addActionListener(e -> {
+            textField.setEnabled(Objects.equals(comboBox.getSelectedItem(), "Да"));
+        });
     }
 }

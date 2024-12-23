@@ -1,7 +1,8 @@
 package controller
 
 import view.app
-import Lists.*;
+import Lists.BD.StudentList
+import Lists.BD.StudentListInterface
 import datalist.DataListStudentShort
 import view.Filter
 
@@ -17,7 +18,7 @@ class studentListController(studentData: StudentListInterface, private var view:
     fun firstInitDataList() {
         val page = 1
         val pageSize = 20
-        dataListStudentShort = studentsList.getKNStudentShort(pageSize, page)
+        dataListStudentShort = studentsList.getKNStudentShort(pageSize, page, null)
         dataListStudentShort?.pagination?.updatePagination(
             studentsList.studentCount(),
             page,
@@ -27,7 +28,7 @@ class studentListController(studentData: StudentListInterface, private var view:
     }
 
     fun refresh_data(pageSize: Int, page: Int, studentFilter: Filter?) {
-        dataListStudentShort = studentsList.getKNStudentShort(pageSize, page);
+        dataListStudentShort = studentsList.getKNStudentShort(pageSize, page, studentFilter);
         dataListStudentShort?.pagination?.updatePagination(
             studentsList.studentCount(),
             page,
@@ -76,5 +77,9 @@ class studentListController(studentData: StudentListInterface, private var view:
 
     fun deleteStudent(id: Int): Boolean {
         return studentsList.deleteStudent(id)
+    }
+
+    fun getStudentsList(): StudentList {
+        return studentsList
     }
 }

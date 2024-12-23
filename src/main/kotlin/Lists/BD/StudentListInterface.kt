@@ -1,4 +1,4 @@
-package Lists
+package Lists.BD
 
 import datalist.DataListStudentShort
 import model.Student

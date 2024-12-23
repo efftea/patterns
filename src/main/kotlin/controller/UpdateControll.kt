@@ -1,6 +1,6 @@
 package controller
 
-import Lists.StudentList
+import Lists.BD.StudentList
 import SQL.StudentsListDB
 import model.Student
 
@@ -10,7 +10,7 @@ class UpdateControll(
 ) : FormControll(studentListController,studentList) {
     constructor(studentListController: studentListController) : this(
         studentListController,
-        StudentList(StudentsListDB())
+        studentListController.getStudentsList()
     )
 
     override fun saveProcessedStudent(student: Student, id: Int?): String {
@@ -20,7 +20,7 @@ class UpdateControll(
         val oldStudentData = studentList.getById(id)
         if (oldStudentData != null) {
             val success = studentList.updateStudent(id, student)
-            if (success!=null) {
+            if (!success) {
                 studentListController.refresh_data()
                 return "Студент обновлён!"
             } else {

@@ -14,7 +14,7 @@ public class appModal {
         JDialog dialog = new JDialog((Frame) null, title, true);
         dialog.setSize(400, 300);
         dialog.setLayout(new GridLayout(7, 2));
-        // Ïîëÿ äëÿ ââîäà äàííûõ
+
         JTextField lastNameField = new JTextField(existingStudent != null ? existingStudent.getLastName() : "");
         JTextField firstNameField = new JTextField(existingStudent != null ? existingStudent.getFirstName() : "");
         JTextField middleNameField = new JTextField(existingStudent != null ? existingStudent.getMiddleName() : "");

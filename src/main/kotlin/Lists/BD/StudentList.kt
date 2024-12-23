@@ -1,4 +1,4 @@
-package Lists
+package Lists.BD
 
 import model.Student
 import datalist.DataListStudentShort
@@ -12,9 +12,10 @@ class StudentList(val studentList: StudentListInterface) {
         return studentList?.getById(id)
     }
 
-    fun getKNStudentShort(k: Int, n: Int, studentFilter: Filter? = null): DataListStudentShort {
+    fun getKNStudentShort(k: Int, n: Int, studentFilter: Filter?): DataListStudentShort {
         this.filter = studentFilter
-        if (studentFilter != null) {
+
+        if (this.filter != null) {
             this.studentList.initStudentFilter(studentFilter)
         }
         return studentList.getKNStudentShort(k, n)

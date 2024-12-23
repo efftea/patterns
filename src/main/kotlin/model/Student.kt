@@ -185,8 +185,36 @@ class Student: SuperStudentClass {
     constructor(){
     }
 
+    override fun getShortNameInfo(): String? {
+        val firstInitial = if (firstName.isNotEmpty()) "${firstName[0]}." else ""
+        val middleInitial = if (middleName.isNotEmpty()) "${middleName[0]}." else ""
+        return "$lastName $firstInitial$middleInitial"
+    }
 
-    fun getInfo() : String
+    override fun getContactInfo(): String? {
+        var res2 = ""
+        if (hasContact()) {
+            if (telegram != null) {
+                res2 = "" + telegram
+            } else {
+                if (phone != null) {
+                    res2 = "" + phone
+                } else {
+                    if (email != null) {
+                        res2 = "" + email
+                    }
+                }
+            }
+        }
+        return res2
+    }
+
+    override fun getGitHubInfo(): String? {
+        return this.github
+    }
+
+
+    override fun getInfo() : String
     {
         var res ="ФИО: "+ getShortName()
         if(hasGitHub())
@@ -194,26 +222,22 @@ class Student: SuperStudentClass {
             res+= " Гит: "+ github
         }
         var res2 = ""
-        if(hasContact())
-        {
-            if(telegram!=null)
-            {
-                res2 = " Телеграм: "+ telegram
-            }
-            else {
+        if(hasContact()) {
+            if (telegram != null) {
+                res2 = " Телеграм: " + telegram
+            } else {
                 if (phone != null) {
                     res2 = " Телефон: " + phone
-                }
-                else {
+                } else {
                     if (email != null) {
                         res2 = " Почта: " + email
                     }
                 }
             }
 
-
         }
-        return res + res2
+
+        return res2
     }
 
     fun getShortName(): String {
@@ -244,4 +268,6 @@ class Student: SuperStudentClass {
         if(github!=null)out+=" $github"
         return out
     }
+
+    fun getFullName(): String = "$lastName $firstName $middleName"
 }

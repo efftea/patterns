@@ -1,6 +1,6 @@
 package controller
 
-import Lists.StudentList
+import Lists.BD.StudentList
 import SQL.StudentsListDB
 import model.Student
 
@@ -9,7 +9,7 @@ class CreateControll(
     studentList: StudentList
 ): FormControll(studentListController,studentList) {
 
-    constructor(studentListController: studentListController): this(studentListController, StudentList(StudentsListDB()))
+    constructor(studentListController: studentListController): this(studentListController, studentListController.getStudentsList())
 
     override fun saveProcessedStudent(student: Student, id: Int?): String {
         val id = studentList.addStudent(student)
