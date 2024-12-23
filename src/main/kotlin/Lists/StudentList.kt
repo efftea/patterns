@@ -26,15 +26,15 @@ class StudentList(val studentList: StudentListInterface) {
         return studentList.addStudent(stud)
     }
 
-    fun updateStudent(id: Int, stud: Student) {
-        return  studentList.updateStudent(id,stud)
+    fun updateStudent(id: Int, stud: Student): Boolean {
+        return studentList.updateStudent(id,stud)
     }
 
-     fun deleteStudent(id: Int) {
-         return studentList.deleteStudent(id)
+    fun deleteStudent(id: Int): Boolean {
+        return studentList.deleteStudent(id)
     }
 
-     fun studentCount(): Int {
+    fun studentCount(): Int {
         return studentList?.studentCount()?:0
     }
 }

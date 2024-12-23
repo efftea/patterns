@@ -113,6 +113,28 @@ public class app implements view{
             }
         });
 
+        deleteButton.addActionListener(e -> {
+            int[] selectedRows = table.getSelectedRows();
+            if (selectedRows.length > 0) {
+                int confirm = JOptionPane.showConfirmDialog(
+                        panel,
+                        "Вы уверены, что хотите удалить выбранные строки?",
+                        "Подтверждение удаления",
+                        JOptionPane.YES_NO_OPTION
+                );
+                if (confirm == JOptionPane.YES_OPTION) {
+                    boolean success = true;
+                    for (int i = selectedRows.length - 1; i >= 0; i--) {
+                        int id = (int) tableModel.getValueAt(selectedRows[i], 0);
+                        if (controller.deleteStudent(id)) {
+                            success = false;
+                        }
+                    }
+                    controller.refresh_data();
+                }
+            }
+        });
+
         nextPageButton.addActionListener(e -> {
             currentPage++;
             controller.refresh_data(PAGE_SIZE, currentPage, getCurrentFilter());

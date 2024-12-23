@@ -20,16 +20,20 @@ class StudentListAdapter(private val studentListF: StudentList, var filter: Filt
         studentList?.addStudent(stud)
         return stud.id
     }
-    override fun updateStudent(id: Int, stud: Student) {
+    override fun updateStudent(id: Int, stud: Student): Boolean {
+        getById(id) ?: return false
         studentList?.updateStudent(id,stud)
+        return true
     }
 
     override fun initStudentFilter(studentFilter: Filter?) {
         this.filter = studentFilter
     }
 
-    override fun deleteStudent(id: Int) {
+    override fun deleteStudent(id: Int): Boolean {
+        getById(id) ?: return false
         studentList?.deleteStudent(id)
+        return true
     }
     override fun studentCount(): Int {
         return studentList?.studentCount()?:0

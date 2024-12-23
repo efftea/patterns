@@ -73,4 +73,8 @@ class studentListController(studentData: StudentListInterface, private var view:
         )
         view.setDataList(dataListStudentShort)
     }
+
+    fun deleteStudent(id: Int): Boolean {
+        return studentsList.deleteStudent(id)
+    }
 }

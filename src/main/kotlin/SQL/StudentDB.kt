@@ -100,7 +100,7 @@ class StudentsListDB(var filter: Filter? = null) :StudentListInterface {
     }
 
 
-    override fun updateStudent(id:Int,student: Student)
+    override fun updateStudent(id:Int,student: Student): Boolean
     {
         var input = "'${student.lastName}', '${student.firstName}', '${student.middleName}'"
         if(student.phone==null){input+=", NULL"}
@@ -112,16 +112,17 @@ class StudentsListDB(var filter: Filter? = null) :StudentListInterface {
         if(student.github==null){input+=", NULL"}
         else{input+=", '${student.github}'"}
         executeQuery("UPDATE student SET (lastName, firstName, middleName, phone, telegram, email, github) = (${input}) WHERE id=${id};")
-
+        return true
     }
 
     override fun initStudentFilter(studentFilter: Filter?) {
         TODO("Not yet implemented")
     }
 
-    override fun deleteStudent(id:Int)
+    override fun deleteStudent(id:Int): Boolean
     {
         executeQuery("DELETE FROM student WHERE id=${id};")
+        return true
     }
 
     override fun studentCount():Int

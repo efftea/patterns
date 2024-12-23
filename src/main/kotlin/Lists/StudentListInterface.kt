@@ -10,8 +10,8 @@ interface StudentListInterface
     fun getById(id:Int): Student?
     fun getKNStudentShort(k: Int, n: Int) : DataListStudentShort
     fun addStudent(stud: Student): Int
-    fun updateStudent(id:Int,stud: Student)
-    fun initStudentFilter(studentFilter: Filter?)
-    fun deleteStudent(id:Int)
+    fun updateStudent(id:Int,stud: Student): Boolean
+    fun deleteStudent(id:Int): Boolean
     fun studentCount():Int
+    fun initStudentFilter(studentFilter: Filter?)
 }
