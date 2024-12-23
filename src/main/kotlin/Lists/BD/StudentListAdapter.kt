@@ -17,7 +17,7 @@ class StudentListAdapter(private val studentListF: StudentList, var filter: Filt
         studentListF.filter = this.filter
         return studentListF.getKNStudentShort(k,n,studentListF.filter) as DataListStudentShort
     }
-    override fun addStudent(stud: Student): Int {
+    override fun addStudent(stud: Student): Int? {
         studentList?.addStudent(stud)
         return stud.id
     }

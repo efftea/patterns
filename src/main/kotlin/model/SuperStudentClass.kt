@@ -42,9 +42,9 @@ abstract class SuperStudentClass {
         {
             return value.matches(Regex("""[A-Я]{1}[a-я]*"""))
         }
-        fun validateMiddleName(value:String): Boolean
+        fun validateMiddleName(value: String?): Boolean
         {
-            return value.matches(Regex("""[A-Я]{1}[a-я]*"""))
+            return value?.matches(Regex("""[A-Я]{1}[a-я]*""")) ?: true
         }
 
         fun validateTG(value:String?): Boolean

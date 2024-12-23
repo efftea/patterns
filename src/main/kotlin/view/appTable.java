@@ -76,8 +76,8 @@ public class appTable {
         addButton.addActionListener(e -> {
 
             Student student = new Student(0, "Иван", "Иванов", "Иванович", "@ivan", "git", "123-456", "ivan@mail.com");
-            int id = studentDB.addStudent(student);
-            if (id > 0) {
+
+            if (studentDB.addStudent(student) != null) {
                 JOptionPane.showMessageDialog(panel, "Состояние добавлено!");
                 refreshInfo(tableModel);
             } else {
@@ -276,9 +276,8 @@ public class appTable {
             // Ïðîñòàÿ âàëèäàöèÿ
             String lastName = lastNameField.getText().trim();
             String firstName = firstNameField.getText().trim();
-            String middleName = middleNameField.getText().trim();
 
-            if (lastName.isEmpty() || firstName.isEmpty() || middleName.isEmpty()) {
+            if (lastName.isEmpty() || firstName.isEmpty()) {
                 JOptionPane.showMessageDialog(dialog, "Ôàìèëèÿ, èìÿ è îò÷åñòâî îáÿçàòåëüíû äëÿ çàïîëíåíèÿ!", "Îøèáêà", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -287,7 +286,6 @@ public class appTable {
             Student student = existingStudent != null ? existingStudent : new Student();
             student.setLastName(lastName);
             student.setFirstName(firstName);
-            student.setMiddleName(middleName);
             student.setTelegram(telegramField.getText().trim());
             student.setGithub(gitField.getText().trim());
             student.setEmail(emailField.getText().trim());

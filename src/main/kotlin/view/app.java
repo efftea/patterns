@@ -22,14 +22,14 @@ public class app implements view{
     private static int currentPage = 1;
     private static final StudentsListDB studentDB = new StudentsListDB();
     private static final JTextField nameField = new JTextField();
-    private static final JComboBox<String> gitComboBox = new JComboBox<>(new String[] { "РќРµ СѓРєР°Р·Р°РЅРѕ", "Р”Р°", "РќРµС‚" });
+    private static final JComboBox<String> gitComboBox = new JComboBox<>(new String[] { "Не указано", "Да", "Нет" });
     private static final JTextField gitField = new JTextField();
     private static final JTextField emailField = new JTextField();
-    private static final JComboBox<String> emailComboBox = new JComboBox<>(new String[] { "РќРµ СѓРєР°Р·Р°РЅРѕ", "Р”Р°", "РќРµС‚" });
+    private static final JComboBox<String> emailComboBox = new JComboBox<>(new String[] { "Не указано", "Да", "Нет" });
     private static final JTextField phoneField = new JTextField();
-    private static final JComboBox<String> phoneComboBox = new JComboBox<>(new String[] { "РќРµ СѓРєР°Р·Р°РЅРѕ", "Р”Р°", "РќРµС‚"  });
+    private static final JComboBox<String> phoneComboBox = new JComboBox<>(new String[] { "Не указано", "Да", "Нет"  });
     private static final JTextField telegramField = new JTextField();
-    private static final JComboBox<String> telegramComboBox = new JComboBox<>(new String[] { "РќРµ СѓРєР°Р·Р°РЅРѕ", "Р”Р°", "РќРµС‚"  });
+    private static final JComboBox<String> telegramComboBox = new JComboBox<>(new String[] { "Не указано", "Да", "Нет"  });
 
     private studentListController controller;
     public void setController(studentListController controller) {
@@ -41,14 +41,14 @@ public class app implements view{
     }
     private DefaultTableModel tableModel;
 
-    private static final JLabel pageInfoLabel = new JLabel("РЎС‚СЂР°РЅРёС†Р°: 1 / ?");
-    private static final JButton prevPageButton = new JButton("РџСЂРµРґС‹РґСѓС‰Р°СЏ");
-    private static final JButton nextPageButton = new JButton("РЎР»РµРґСѓСЋС‰Р°");
+    private static final JLabel pageInfoLabel = new JLabel("Страница: 1 / ?");
+    private static final JButton prevPageButton = new JButton("Предыдущая");
+    private static final JButton nextPageButton = new JButton("Следующа");
 
-    private static final JButton refreshButton = new JButton("РћР±РЅРѕРІРёС‚СЊ");
-    private static final JButton addButton = new JButton("Р”РѕР±Р°РІРёС‚СЊ");
-    private static final JButton editButton = new JButton("РР·РјРµРЅРёС‚СЊ");
-    private static final JButton deleteButton = new JButton("РЈРґР°Р»РёС‚СЊ");
+    private static final JButton refreshButton = new JButton("Обновить");
+    private static final JButton addButton = new JButton("Добавить");
+    private static final JButton editButton = new JButton("Изменить");
+    private static final JButton deleteButton = new JButton("Удалить");
 
     public app() {}
 
@@ -57,13 +57,14 @@ public class app implements view{
         controller.firstInitDataList();
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("student.Student");
+
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(800, 600);
             JTabbedPane tabbedPane = new JTabbedPane();
-            tabbedPane.add("РЎРїРёСЃРѕРє СЃС‚СѓРґРµРЅС‚РѕРІ", createStudentTab());
-            tabbedPane.add("Р’РєР»Р°РґРєР° 2", new JLabel("РЎРѕРґРµСЂР¶РёРјРѕРµ РІРєР»Р°РґРєРё 2"));
-            tabbedPane.add("Р’РєР»Р°РґРєР° 3", new JLabel("РЎРѕРґРµСЂР¶РёРјРѕРµ РІРєР»Р°РґРєРё 3"));
 
+            tabbedPane.add("Список студентов", createStudentTab());
+            tabbedPane.add("Вкладка 2", new JLabel("Содержимое вкладки 2"));
+            tabbedPane.add("Вкладка 3", new JLabel("Содержимое вкладки 3"));
             frame.add(tabbedPane);
             frame.setVisible(true);
             update();
@@ -74,9 +75,9 @@ public class app implements view{
     private JPanel createStudentTab() {
         JPanel panel = new JPanel(new BorderLayout());
         addFilters(panel);
-        String[] columnNames = { "ID", "Р¤Р°РјРёР»РёСЏ РРЅРёС†РёР°Р»С‹", "Git", "Email", "РўРµР»РµС„РѕРЅ", "Telegram" };
+        String[] columnNames = { "ID", "Фамилия Инициалы", "Git", "Email", "Телефон", "Telegram" };
 
-        // РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ tableModel
+        // Инициализация tableModel
         tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -110,7 +111,8 @@ public class app implements view{
 
         table.getSelectionModel().addListSelectionListener(e -> {
             boolean rowSelected = table.getSelectedRow() >= 0;
-            editButton.setEnabled(rowSelected);
+            int selectedRowCount = table.getSelectedRowCount();
+            editButton.setEnabled(selectedRowCount == 1);
             deleteButton.setEnabled(rowSelected);
         });
 
@@ -118,7 +120,7 @@ public class app implements view{
             CreateControll cc = new CreateControll(this.controller);
             appModal modal = new appModal();
             modal.controller = cc;
-            modal.create(null, "РЎРѕР·РґР°РЅРёРµ СЃС‚СѓРґРµРЅС‚Р°");
+            modal.create(null, "Создание студента");
         });
 
         editButton.addActionListener(e -> {
@@ -126,10 +128,16 @@ public class app implements view{
             appModal modal = new appModal();
             modal.controller = uc;
             int selectedRow = table.getSelectedRow();
-            if (selectedRow >= 0) {
+
+            if (selectedRow != -1) {
                 int id = (int) tableModel.getValueAt(selectedRow, 0);
+
                 Student student = uc.getStudentById(id);
-                modal.create(student, "РћР±РЅРѕРІР»РµРєРЅРёРµ СЃС‚СѓРґРµРЅС‚Р°");
+                System.out.println(student.getMiddleName());
+
+                modal.create(student, "Обновление студента");
+            } else {
+                JOptionPane.showMessageDialog(null, "Пожалуйста, выберите одну строку для редактирования.");
             }
         });
 
@@ -138,8 +146,8 @@ public class app implements view{
             if (selectedRows.length > 0) {
                 int confirm = JOptionPane.showConfirmDialog(
                         panel,
-                        "Р’С‹ СѓРІРµСЂРµРЅС‹, С‡С‚Рѕ С…РѕС‚РёС‚Рµ СѓРґР°Р»РёС‚СЊ РІС‹Р±СЂР°РЅРЅС‹Рµ СЃС‚СЂРѕРєРё?",
-                        "РџРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ СѓРґР°Р»РµРЅРёСЏ",
+                        "Вы уверены, что хотите удалить выбранные строки?",
+                        "Подтверждение удаления",
                         JOptionPane.YES_NO_OPTION
                 );
                 if (confirm == JOptionPane.YES_OPTION) {
@@ -205,7 +213,7 @@ public class app implements view{
         updatePageControls(lastPage);
     }
     private void updatePageControls(int lastPage) {
-        pageInfoLabel.setText("РЎС‚СЂР°РЅРёС†Р°: " + currentPage + " / " + lastPage);
+        pageInfoLabel.setText("Страница: " + currentPage + " / " + lastPage);
         prevPageButton.setEnabled(currentPage > 1);
         nextPageButton.setEnabled(currentPage < lastPage);
     }
@@ -263,14 +271,14 @@ public class app implements view{
     private void addFilters(JPanel panel) {
 
         JPanel filterPanel = new JPanel(new GridLayout(5, 3));
-        filterPanel.setBorder(BorderFactory.createTitledBorder("Р¤РёР»СЊС‚СЂР°С†РёСЏ"));
+        filterPanel.setBorder(BorderFactory.createTitledBorder("Фильтрация"));
 
         setupFilter(gitComboBox, gitField);
         setupFilter(emailComboBox, emailField);
         setupFilter(phoneComboBox, phoneField);
         setupFilter(telegramComboBox, telegramField);
 
-        filterPanel.add(new JLabel("Р¤Р°РјРёР»РёСЏ Рё РёРЅРёС†РёР°Р»С‹:"));
+        filterPanel.add(new JLabel("Фамилия и инициалы:"));
         filterPanel.add(nameField);
         filterPanel.add(new JLabel());
         filterPanel.add(new JLabel("GitHub:"));
@@ -279,7 +287,7 @@ public class app implements view{
         filterPanel.add(new JLabel("Email:"));
         filterPanel.add(emailComboBox);
         filterPanel.add(emailField);
-        filterPanel.add(new JLabel("РўРµР»РµС„РѕРЅ:"));
+        filterPanel.add(new JLabel("Телефон:"));
         filterPanel.add(phoneComboBox);
         filterPanel.add(phoneField);
         filterPanel.add(new JLabel("Telegram:"));
@@ -291,7 +299,7 @@ public class app implements view{
     private static void setupFilter(JComboBox<String> comboBox, JTextField textField) {
         textField.setEnabled(false);
         comboBox.addActionListener(e -> {
-            textField.setEnabled(Objects.equals(comboBox.getSelectedItem(), "Р”Р°"));
+            textField.setEnabled(Objects.equals(comboBox.getSelectedItem(), "Да"));
         });
     }
 }

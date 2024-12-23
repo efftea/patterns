@@ -7,6 +7,9 @@ import model.Student
 import model.StudentShort
 import view.Filter
 import view.Params
+import kotlin.collections.toList
+import kotlin.streams.toList
+
 
 class StudentListFile(
     private var students: MutableList<Student>,
@@ -37,28 +40,24 @@ class StudentListFile(
             return students.first { it.id == id }
         }
 
-        fun get_k_n_student_short_list(n: Int, k: Int): DataList<StudentShort> {
-            require(n >= 0) { "Индекс n должен быть больше или равен 0." }
-            require(k > 0) { "Количество k должно быть больше 0." }
+    fun get_k_n_student_short_list(n: Int, k: Int): DataList<StudentShort> {
+        require(n >= 0) { "Индекс n должен быть больше или равен 0." }
+        require(k > 0) { "Количество k должно быть больше 0." }
 
+        val filteredStudents = students
+            .drop((n - 1) * k)
+            .take(k)
+
+        return DataListStudentShort(
             if (studentFilter != null) {
-                return DataListStudentShort(
-                    students
-                        .drop((n - 1) * k)
-                        .take(k)
-                        .stream()
-                        .filter { filterByStudentFilter(it) }
-                        .map { StudentShort(it) }
-                        .toList()
-                )
-            }
-            return DataListStudentShort(
-                students
-                    .drop((n - 1) * k)
-                    .take(k)
+                filteredStudents
+                    .filter { filterByStudentFilter(it) }
                     .map { StudentShort(it) }
-            )
-        }
+            } else {
+                filteredStudents.map { StudentShort(it) }
+            }
+        )
+    }
 
         fun filterByStudentFilter(student: Student): Boolean {
             if (studentFilter == null) {
@@ -109,12 +108,11 @@ class StudentListFile(
             students.sortedWith(comparator)
         }
 
-        fun add(student: Student) {
-            val nextId = (students.maxByOrNull { it.id }?.id ?: 0) + 1
-            student.id = nextId
-
-            students.addLast(student)
-        }
+    fun add(student: Student) {
+        val nextId = (students.maxOfOrNull { it.id } ?: 0) + 1
+        student.id = nextId
+        students.add(student)
+    }
 
         fun replaceById(student: Student, id: Int) {
             student.id = id

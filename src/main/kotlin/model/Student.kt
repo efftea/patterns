@@ -30,12 +30,11 @@ class Student: SuperStudentClass {
             return field
         }
 
-    @field:JsonProperty("middleName") var middleName: String = ""
+    @field:JsonProperty("middleName") var middleName: String? = null
         set(value)
         {
-            if(SuperStudentClass.validateMiddleName(value))
-            {
-                field=value
+            if (SuperStudentClass.validateMiddleName(value)) {
+                field = value
             }
         }
         get()
@@ -111,17 +110,36 @@ class Student: SuperStudentClass {
 
     @JsonCreator constructor(
         @JsonProperty("id") _id: String = "0",
-        @JsonProperty("github") _github: String? = "",
+        @JsonProperty("github") _github: String? = null,
         @JsonProperty("lastName") _lastName: String = "",
-        @JsonProperty("firstName")  _firstName: String = "",
-        @JsonProperty("middleName")  _middleName: String = "",
-        @JsonProperty("phone")  _phone: String? = null,
-        @JsonProperty("telegram")  _telegram: String? = null,
-        @JsonProperty("email")  _email: String? = null,)
+        @JsonProperty("firstName") _firstName: String = "",
+        @JsonProperty("middleName") _middleName: String? = null,
+        @JsonProperty("phone") _phone: String? = null,
+        @JsonProperty("telegram") _telegram: String? = null,
+        @JsonProperty("email") _email: String? = null,
+    )
     {
         id=_id.toInt()
         lastName=_lastName
         firstName=_firstName
+        middleName =_middleName
+        phone=_phone
+        telegram=_telegram
+        email=_email
+        github=_github
+    }
+    constructor(_lastName: String, _firstName: String)
+    {
+        id= SuperStudentClass.ids
+        lastName=_lastName
+        firstName=_firstName
+    }
+
+    constructor(_lastName:String,_firstName:String,_middleName:String?=null,_phone:String?=null,_telegram:String?=null,_email:String?=null,_github:String?=null)
+    {
+        id= SuperStudentClass.ids
+        lastName=_lastName
+        firstName=_firstName
         middleName=_middleName
         phone=_phone
         telegram=_telegram
@@ -129,27 +147,7 @@ class Student: SuperStudentClass {
         github=_github
     }
 
-    constructor(_lastName:String,_firstName:String,_middleName:String)
-    {
-        id= SuperStudentClass.ids
-        lastName=_lastName
-        firstName=_firstName
-        middleName=_middleName
-    }
-
-    constructor(_lastName:String,_firstName:String,_middleName:String,_phone:String?=null,_telegram:String?=null,_email:String?=null,_github:String?=null)
-    {
-        id= SuperStudentClass.ids
-        lastName=_lastName
-        firstName=_firstName
-        middleName=_middleName
-        phone=_phone
-        telegram=_telegram
-        email=_email
-        github=_github
-    }
-
-    constructor(_id:Int,_lastName:String,_firstName:String,_middleName:String,_phone:String?=null,_telegram:String?=null,_email:String?=null,_github:String?=null)
+    constructor(_id:Int,_lastName:String,_firstName:String,_middleName:String?=null,_phone:String?=null,_telegram:String?=null,_email:String?=null,_github:String?=null)
     {
         id = _id
         lastName=_lastName
@@ -161,16 +159,17 @@ class Student: SuperStudentClass {
         github=_github
     }
 
-    constructor(hashStud: HashMap<String,Any?>)
+    constructor(hashStud: HashMap<String, Any?>, middleName: String?)
     {
         id= SuperStudentClass.ids
         lastName=hashStud["lastName"].toString()
         firstName=hashStud["firstName"].toString()
-        middleName=hashStud["middleName"].toString()
+        this.middleName =hashStud.getOrDefault("middleName", null).toString()
         phone=hashStud.getOrDefault("phone",null).toString()
         telegram=hashStud.getOrDefault("telegram",null).toString()
         email=hashStud.getOrDefault("email",null).toString()
         github=hashStud.getOrDefault("github",null).toString()
+        this.middleName = middleName
     }
 
     constructor(input:String): this (input.split(" ")[0],input.split(" ")[1],input.split(" ")[2],input.split(" ").getOrNull(3),input.split(" ").getOrNull(4),input.split(" ").getOrNull(5),input.split(" ").getOrNull(6))
@@ -187,7 +186,7 @@ class Student: SuperStudentClass {
 
     override fun getShortNameInfo(): String? {
         val firstInitial = if (firstName.isNotEmpty()) "${firstName[0]}." else ""
-        val middleInitial = if (middleName.isNotEmpty()) "${middleName[0]}." else ""
+        val middleInitial = if (!middleName.isNullOrEmpty()) "${middleName!![0]}." else ""
         return "$lastName $firstInitial$middleInitial"
     }
 
@@ -242,7 +241,7 @@ class Student: SuperStudentClass {
 
     fun getShortName(): String {
         val firstInitial = if (firstName.isNotEmpty()) "${firstName[0]}." else ""
-        val middleInitial = if (middleName.isNotEmpty()) "${middleName[0]}." else ""
+        val middleInitial = if (!middleName.isNullOrEmpty()) "${middleName!![0]}." else ""
         return "$lastName $firstInitial$middleInitial"
     }
 
@@ -251,7 +250,7 @@ class Student: SuperStudentClass {
         var out = "ID: $id"
         out+=", Фамилия: $lastName"
         out+=", Имя: $firstName"
-        out+=", Отчество: $middleName"
+        if(middleName!=null)out+=", Отчество: $middleName"
         if(telegram!=null)out+=", Телеграм: $telegram"
         if(phone!=null)out+=", Телефон: $phone"
         if(email!=null)out+=", Почта: $email"
@@ -261,7 +260,8 @@ class Student: SuperStudentClass {
 
     fun toString2() : String
     {
-        var out = "$id $lastName $firstName $middleName"
+        var out = "$id $lastName $firstName "
+        if(middleName!=null)out+=", Отчество: $middleName"
         if(phone!=null)out+=" $phone"
         if(telegram!=null)out+=" $telegram"
         if(email!=null)out+=" $email"
@@ -269,5 +269,9 @@ class Student: SuperStudentClass {
         return out
     }
 
-    fun getFullName(): String = "$lastName $firstName $middleName"
+    fun getFullName(): String {
+        var out = "$lastName $firstName"
+        if(middleName!=null) out+=" $middleName"
+        return out
+    }
 }

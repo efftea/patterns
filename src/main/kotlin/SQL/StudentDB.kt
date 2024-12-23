@@ -34,13 +34,21 @@ class StudentsListDB(var filter: Filter? = null) : StudentListInterface {
     }
 
 
-    fun executeQuery(query: String): ResultSet? {
+    fun executeQuery(query: String, vararg params: Any): ResultSet? {
+        var preparedStatement: PreparedStatement? = null
+        var resultSet: ResultSet? = null
+
         return try {
-            val stmt = connection.createStatement()
-            stmt.executeQuery(query)
-        } catch (e: Exception) {
-            e.printStackTrace()
+            preparedStatement = connection.prepareStatement(query)
+            for (i in params.indices) {
+                preparedStatement.setObject(i + 1, params[i])
+            }
+
+            resultSet = preparedStatement.executeQuery()
+            resultSet
+        } catch (e: SQLException) {
             null
+        } finally {
         }
     }
 
@@ -55,7 +63,10 @@ class StudentsListDB(var filter: Filter? = null) : StudentListInterface {
                 input = ""
                 id=result.getString(1).toInt()
                 for (i in 2..result.metaData.columnCount) {
-                    input+=result.getString(i)+" "
+                    val value = result.getString(i)
+                    if (value != null) {
+                        input+=result.getString(i)+" "
+                    }
                 }
             }
             return Student(input, id)
@@ -64,8 +75,13 @@ class StudentsListDB(var filter: Filter? = null) : StudentListInterface {
     }
 
 
-    override fun addStudent(student: Student): Int {
-        var input = "'${student.lastName}', '${student.firstName}', '${student.middleName}'"
+    override fun addStudent(student: Student): Int? {
+        var input = "'${student.lastName}', '${student.firstName}'"
+        if (student.middleName == null) {
+            input += ", NULL"
+        } else {
+            input += ", '${student.middleName}'"
+        }
         if (student.phone == null) {
             input += ", NULL"
         } else {
@@ -96,22 +112,30 @@ class StudentsListDB(var filter: Filter? = null) : StudentListInterface {
                 throw Exception("Failed")
             }
         }
-        return TODO("Failed")
+        return null
     }
 
 
-    override fun updateStudent(id:Int,student: Student): Boolean
-    {
-        var input = "'${student.lastName}', '${student.firstName}', '${student.middleName}'"
-        if(student.phone==null){input+=", NULL"}
-        else{input+=", '${student.phone}'"}
-        if(student.telegram==null){input+=", NULL"}
-        else{input+=", '${student.telegram}'"}
-        if(student.email==null){input+=", NULL"}
-        else{input+=", '${student.email}'"}
-        if(student.github==null){input+=", NULL"}
-        else{input+=", '${student.github}'"}
-        executeQuery("UPDATE student SET (lastName, firstName, middleName, phone, telegram, email, github) = (${input}) WHERE id=${id};")
+    override fun updateStudent(id:Int, student: Student): Boolean
+
+    {   val query = """
+        UPDATE student 
+        SET lastName = ?, firstName = ?, middleName = ?, phone = ?, telegram = ?, email = ?, github = ? 
+        WHERE id = ?;
+    """.trimIndent()
+
+        val preparedStatement = connection.prepareStatement(query)
+
+        preparedStatement.setString(1, student.lastName)
+        preparedStatement.setString(2, student.firstName)
+        preparedStatement.setString(3, student.middleName)
+        preparedStatement.setString(4, student.phone)
+        preparedStatement.setString(5, student.telegram)
+        preparedStatement.setString(6, student.email)
+        preparedStatement.setString(7, student.github)
+        preparedStatement.setInt(8, id)
+
+        preparedStatement.executeUpdate()
         return true
     }
 
@@ -205,10 +229,14 @@ class StudentsListDB(var filter: Filter? = null) : StudentListInterface {
             while (result.next()) {
                 input = ""
                 for (i in 2..result.metaData.columnCount) {
-                    input+=result.getString(i)+" "
+                    val value = result.getString(i)
+                    if (value != null) {
+                        input+=result.getString(i)+" "
+                    }
                 }
                 sl.add(Student(input,result.getInt(1)))
             }
+
         }
         var ss = sl.map{ StudentShort(it) }
 
@@ -224,21 +252,24 @@ class StudentsListDB(var filter: Filter? = null) : StudentListInterface {
 
         val result = executeQuery("SELECT * FROM student ${filterQuery(filter)} ORDER BY id LIMIT $pageSize OFFSET $offset")
         val sl = mutableListOf<Student>()
-        println("SELECT * FROM student ${filterQuery(filter)} ORDER BY id LIMIT $pageSize OFFSET $offset")
+
         if (result != null) {
             while (result.next()) {
                 val input = StringBuilder()
                 for (i in 2..result.metaData.columnCount) {
-                    input.append(result.getString(i)).append(" ")
+                    // Проверяем на null перед добавлением в input
+                    val value = result.getString(i)
+                    if (value != null) {
+                        input.append(value).append(" ")
+                    }
                 }
-                sl.add(Student(input.toString(), result.getInt(1)))
 
+                sl.add(Student(input.toString(), result.getInt(1)))
             }
         }
 
         return sl
     }
-
     fun getFilterCount(studentFilter: Filter?): Int {
         var query = "SELECT COUNT(*) FROM student ${filterQuery(studentFilter!!)}"
 

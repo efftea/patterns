@@ -9,9 +9,6 @@ import view.*
 
 fun main(args: Array<String>) {
     val view = app()
-//    val controller = studentListController(StudentsListDB(), view)
-    val filePath = "src/main/kotlin/Lists/files/input.json"
-    val studentListFile = StudentListFile(filePath, StudentListJSON())
-    val controller = studentListController(StudentListFileAdapter(studentListFile), view)
+    val controller = studentListController(StudentsListDB(), view)
     view.create(controller)
 }

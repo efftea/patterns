@@ -17,15 +17,17 @@ abstract class FormControll(
         existingStudent: Student?,
         lastName: String,
         firstName: String,
-        middleName: String,
-        telegram: String,
-        git: String,
-        email: String
+        middleName: String?,
+        phone: String?,
+        telegram: String?,
+        git: String?,
+        email: String?
     ): Student {
         val student = if (existingStudent != null) existingStudent else Student()
         student.lastName = lastName
         student.firstName = firstName
         student.middleName = middleName
+        student.phone = phone
         student.telegram = telegram
         student.github = git
         student.email = email

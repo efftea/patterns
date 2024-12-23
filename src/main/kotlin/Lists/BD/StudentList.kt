@@ -21,12 +21,12 @@ class StudentList(val studentList: StudentListInterface) {
         return studentList.getKNStudentShort(k, n)
     }
 
-    fun addStudent(stud: Student): Int {
+    fun addStudent(stud: Student): Int? {
         return studentList.addStudent(stud)
     }
 
     fun updateStudent(id: Int, stud: Student): Boolean {
-        return studentList.updateStudent(id,stud)
+        return studentList.updateStudent(id, stud)
     }
 
     fun deleteStudent(id: Int): Boolean {
@@ -34,6 +34,6 @@ class StudentList(val studentList: StudentListInterface) {
     }
 
     fun studentCount(): Int {
-        return studentList?.studentCount()?:0
+        return studentList?.studentCount() ?: 0
     }
 }

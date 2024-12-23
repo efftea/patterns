@@ -49,9 +49,8 @@ public class appContr {
         saveButton.addActionListener(e -> {
             String lastName = lastNameField.getText().trim();
             String firstName = firstNameField.getText().trim();
-            String middleName = middleNameField.getText().trim();
 
-            if (lastName.isEmpty() || firstName.isEmpty() || middleName.isEmpty()) {
+            if (lastName.isEmpty() || firstName.isEmpty()) {
                 JOptionPane.showMessageDialog(dialog, "Пожалуйста, введите фамилию, имя и отчество!", "Ошибка", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -60,7 +59,6 @@ public class appContr {
             Student student = existingStudent != null ? existingStudent : new Student();
             student.setLastName(lastName);
             student.setFirstName(firstName);
-            student.setMiddleName(middleName);
             student.setTelegram(telegramField.getText().trim());
             student.setGithub(gitField.getText().trim());
             student.setEmail(emailField.getText().trim());
