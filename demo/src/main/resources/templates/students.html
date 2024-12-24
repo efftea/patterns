@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Список студентов</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212; /* Тёмный фон */
+            color: #e0e0e0; /* Светлый текст */
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #ffffff; /* Белый цвет заголовка */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #333; /* Тёмная граница */
+            cursor: pointer; /* Указатель для строк */
+        }
+        th {
+            background-color: #1f1f1f; /* Тёмный фон для заголовков */
+            color: #ffffff; /* Белый текст для заголовков */
+        }
+        tr:hover {
+            background-color: #333; /* Цвет при наведении на строку */
+        }
+        .selected {
+            background-color: #555; /* Цвет выделенной строки */
+        }
+        .filter-container {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        .filter-container select,
+        .filter-container input[type=text] {
+            padding: 10px;
+            margin-right: 10px;
+        }
+        .actions-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center; /* Выравнивание по центру по вертикали */
+            margin-top: 20px;
+        }
+        .pagination {
+            display: flex;
+            align-items: center; /* Выравнивание по центру по вертикали */
+        }
+        .btn {
+            background-color: #bb86fc; /* Цвет кнопок */
+            color: white; /* Цвет текста кнопок */
+            border: none;
+            padding: 10px 15px;
+            margin-left: 5px; /* Отступ между кнопками */
+            cursor: pointer;
+            border-radius: 5px; /* Закругленные углы */
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #9b59b6; /* Цвет кнопки при наведении */
+        }
+        .btn[disabled] {
+           background-color: #555; /* Цвет для неактивных кнопок */
+           cursor: not-allowed; /* Указатель для неактивных кнопок */
+        }
+    </style>
+</head>
+<body>
+<h1>Список студентов</h1>
+
+<div class="filter-container">
+    <div>
+        <label for="number">Номер:</label>
+        <select id="number" onchange="toggleInput(this)">
+            <option value="Не важно">Не важно</option>
+            <option value="Да">Да</option>
+            <option value="Нет">Нет</option>
+        </select>
+        <input type="text" placeholder="Введите номер" style="display:none;">
+    </div>
+
+    <div>
+        <label for="email">Email:</label>
+        <select id="email" onchange="toggleInput(this)">
+            <option value="Не важно">Не важно</option>
+            <option value="Да">Да</option>
+            <option value="Нет">Нет</option>
+        </select>
+        <input type="text" placeholder="Введите email" style="display:none;">
+    </div>
+
+    <div>
+        <label for="tg">Tg:</label>
+        <select id="tg" onchange="toggleInput(this)">
+            <option value="Не важно">Не важно</option>
+            <option value="Да">Да</option>
+            <option value="Нет">Нет</option>
+        </select>
+        <input type="text" placeholder="Введите Tg" style="display:none;">
+    </div>
+
+    <div>
+        <label for="git">Git:</label>
+        <select id="git" onchange="toggleInput(this)">
+            <option value="Не важно">Не важно</option>
+            <option value="Да">Да</option>
+            <option value="Нет">Нет</option>
+        </select>
+        <input type="text" placeholder="Введите Git" style="display:none;">
+    </div>
+</div>
+
+<table id="studentTable">
+    <thead>
+    <tr>
+        <th onclick="sortTable(0)">ID &#x21C5;</th> <!-- Сортировка по ID -->
+        <th onclick="sortTable(1)">ФИО &#x21C5;</th> <!-- Сортировка по ФИО -->
+        <th onclick="sortTable(2)">Git &#x21C5;</th> <!-- Сортировка по Git -->
+        <th onclick="sortTable(3)">Контакт &#x21C5;</th> <!-- Сортировка по Контакту -->
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Пример данных. Замените на ваши данные с использованием Thymeleaf -->
+    <tr onclick="toggleRowSelection(this)"th:each="student : ${students}">
+        <td th:text="${student.id}"></td>
+        <td th:text="${student.fullname}"></td>
+        <td th:text="${student.git}"></td>
+        <td th:text="${student.contact}"></td>
+    </tr>
+
+    </tbody>
+</table>
+
+<div class="actions-container">
+    <div class="pagination">
+    <a th:href="@{/students(page=${currentPage - 1}, size=${pageSize})}" 
+       th:if="${currentPage > 0}" class="btn">← Пред.</a>
+    
+    Страница <span th:text="${currentPage + 1}"></span> из 
+    <span th:text="${totalPages}"></span>
+    
+    <a th:href="@{/students(page=${currentPage + 1}, size=${pageSize})}" 
+       th:if="${currentPage < totalPages - 1}" class="btn">След. →</a>
+	</div>
+     <button id="refreshButton" class="btn" onclick="refreshTable()">Обновить</button>
+     <button id="editButton" class="btn" onclick="editStudent()" disabled>Изменить</button> 
+     <button id="deleteButton" class="btn" onclick="deleteStudent()" disabled>Удалить</button> 
+     <button class="btn" onclick="alert('Добавить')">Добавить</button> 
+</div>
+
+<script>
+
+
+
+function toggleInput(selectElement) {
+   const input = selectElement.nextElementSibling;
+   if (selectElement.value === "Да") {
+       input.style.display = "inline-block";
+       input.focus();
+   } else {
+       input.style.display = "none";
+       input.value = "";
+   }
+}
+
+
+function toggleRowSelection(row) {
+   row.classList.toggle('selected');
+   updateButtonStates();
+}
+
+
+function updateButtonStates() {
+   const selectedRows = document.querySelectorAll('.selected');
+   
+   const deleteButton = document.getElementById('deleteButton');
+   const editButton = document.getElementById('editButton');
+
+   deleteButton.disabled = selectedRows.length === 0; 
+   editButton.disabled = selectedRows.length !== 1;
+}
+
+function sortTable(columnIndex) {
+   const table = document.getElementById("studentTable");
+   const tbody = table.querySelector("tbody");
+   const rows = Array.from(tbody.querySelectorAll("tr"));
+
+   const isAscending = !tbody.dataset.sortOrder || tbody.dataset.sortOrder === "desc";
+   
+   rows.sort((a, b) => {
+       const aText = a.children[columnIndex].innerText.toLowerCase();
+       const bText = b.children[columnIndex].innerText.toLowerCase();
+
+       return isAscending ? aText.localeCompare(bText) : bText.localeCompare(aText);
+   });
+
+   while (tbody.firstChild) {
+       tbody.removeChild(tbody.firstChild);
+   }
+   
+   rows.forEach(row => tbody.appendChild(row));
+  
+   tbody.dataset.sortOrder = isAscending ? "asc" : "desc";
+}
+</script>
+
+</body>
+</html>
+
